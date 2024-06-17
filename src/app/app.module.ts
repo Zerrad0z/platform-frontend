@@ -13,7 +13,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { FormsModule } from '@angular/forms';
 import { MatExpansionModule } from '@angular/material/expansion';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 import { AppComponent } from './app.component';
@@ -25,6 +28,7 @@ import { HomeComponent } from './components/home/home.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthorisationComponent } from './components/authorisation/authorisation.component';
 import { DemandeAuthorisationComponent } from './components/demande-authorisation/demande-authorisation.component';
+import { DemandeComponent } from './components/demande/demande.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +39,8 @@ import { DemandeAuthorisationComponent } from './components/demande-authorisatio
     HomeComponent,
     DashboardComponent,
     AuthorisationComponent,
-    DemandeAuthorisationComponent
+    DemandeAuthorisationComponent,
+    DemandeComponent
   ],
   imports: [
     BrowserModule,
@@ -44,6 +49,7 @@ import { DemandeAuthorisationComponent } from './components/demande-authorisatio
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
+    FormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
@@ -54,6 +60,8 @@ import { DemandeAuthorisationComponent } from './components/demande-authorisatio
     MatSidenavModule,
     MatToolbarModule,
     MatListModule,
+    MatDialogModule,
+    MatDatepickerModule,
     AppRoutingModule
   ],
   providers: [],

@@ -1,8 +1,11 @@
 <!-- src/app/components/user/user.component.html -->
+<mat-toolbar color="primary">
+  <span>Users</span>
+</mat-toolbar>
 <mat-form-field class="custom-form-field" appearance="outline">
     <mat-label>Search User</mat-label>
     <mat-icon matPrefix>search</mat-icon>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+    <input matInput (keyup)="applyFilter($event)" placeholder="User" #input>
   </mat-form-field>
   
   <div class="mat-elevation-z8">

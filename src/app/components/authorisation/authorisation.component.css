@@ -5,4 +5,10 @@
     }
     padding: 2px; /* Adjust the padding value as needed */
   }
-  
+  mat-toolbar {
+    background-color: #ffffffdb; /* Replace with your desired color */
+    color: rgb(0, 0, 0); /* Ensures the text color is white for contrast */
+    margin-bottom: 10px; /* Ensure no margin at the bottom */
+    padding: 0; /* Adjust padding if needed */
+    box-shadow: 0 4px 8px rgba(1, 0, 0, 0.1); /* Add shadow to the toolbar */
+  }
