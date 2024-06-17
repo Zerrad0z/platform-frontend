@@ -1,0 +1,8 @@
+/* src/app/components/user/user.component.css */
+.custom-form-field {
+    .mat-form-field-outline {
+      display: none;
+    }
+    padding: 2px; /* Adjust the padding value as needed */
+  }
+  

@@ -1,0 +1,66 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav mode="side" opened class="sidenav">
+    <mat-toolbar>Dashboard</mat-toolbar>
+    <mat-nav-list>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>people</mat-icon>
+            Manage Users
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list-item>
+          <mat-icon matListIcon>person</mat-icon>
+          <a matLine routerLink="/users">Users</a>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon matListIcon>admin_panel_settings</mat-icon>
+          <a matLine routerLink="/admins">Admins</a>
+        </mat-list-item>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>api</mat-icon>
+            Manage APIs
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list-item>
+          <mat-icon matListIcon>list</mat-icon>
+          <a matLine routerLink="/apis">APIs</a>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon matListIcon>hourglass_empty</mat-icon>
+          <a matLine routerLink="/demandes">Demandes</a>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon matListIcon>verified</mat-icon>
+          <a matLine routerLink="/approuves">Autorisés</a>
+        </mat-list-item>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>settings</mat-icon>
+            Settings
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list-item>
+          <mat-icon matListIcon>settings</mat-icon>
+          <a matLine routerLink="/settings">Settings</a>
+        </mat-list-item>
+      </mat-expansion-panel>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="sidenav-content">
+    <mat-toolbar>
+      <span>My Dashboard</span>
+    </mat-toolbar>
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

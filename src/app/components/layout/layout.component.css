@@ -1,0 +1,15 @@
+mat-toolbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #3f51b5; /* Change the color to your branding */
+  }
+  
+  button[mat-button] {
+    color: white;
+    font-weight: bold;
+  }
+  
+  button[mat-menu-item] {
+    color: black;
+  }
+  
