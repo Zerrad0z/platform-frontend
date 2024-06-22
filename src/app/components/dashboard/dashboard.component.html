@@ -11,11 +11,15 @@
         </mat-expansion-panel-header>
         <mat-list-item>
           <mat-icon matListIcon>person</mat-icon>
-          <a matLine routerLink="/users">Users</a>
+          <a matLine routerLink="/admin/users">Users</a>
         </mat-list-item>
         <mat-list-item>
           <mat-icon matListIcon>admin_panel_settings</mat-icon>
-          <a matLine routerLink="/admins">Admins</a>
+          <a matLine routerLink="/admin/admins">Admins</a>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon matListIcon>person_add</mat-icon>
+          <a matLine routerLink="/admin/add-user">Add User</a>
         </mat-list-item>
       </mat-expansion-panel>
 
@@ -27,16 +31,12 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-list-item>
-          <mat-icon matListIcon>list</mat-icon>
-          <a matLine routerLink="/apis">APIs</a>
-        </mat-list-item>
-        <mat-list-item>
           <mat-icon matListIcon>hourglass_empty</mat-icon>
-          <a matLine routerLink="/demandes">Demandes</a>
+          <a matLine routerLink="/admin/demandes">Demandes</a>
         </mat-list-item>
         <mat-list-item>
           <mat-icon matListIcon>verified</mat-icon>
-          <a matLine routerLink="/approuves">Autorisés</a>
+          <a matLine routerLink="/admin/approuves">Autorisés</a>
         </mat-list-item>
       </mat-expansion-panel>
 
@@ -53,6 +53,14 @@
         </mat-list-item>
       </mat-expansion-panel>
     </mat-nav-list>
+
+    <div style="margin-top: auto;">
+      <mat-divider></mat-divider>
+      <mat-list-item (click)="logout()">
+        <mat-icon matListIcon>exit_to_app</mat-icon>
+        <span matLine>Logout</span>
+      </mat-list-item>
+    </div>
   </mat-sidenav>
 
   <mat-sidenav-content class="sidenav-content">

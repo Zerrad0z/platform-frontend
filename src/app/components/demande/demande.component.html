@@ -1,1 +1,27 @@
-<p>demande</p>
+<h1 mat-dialog-title>Demande Authorisation</h1>
+<div mat-dialog-content>
+  <form [formGroup]="demandeForm">
+    <mat-form-field class="full-width">
+      <mat-label>Date De</mat-label>
+      <input matInput [matDatepicker]="dePicker" formControlName="dateDe">
+      <mat-datepicker-toggle matSuffix [for]="dePicker"></mat-datepicker-toggle>
+      <mat-datepicker #dePicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Date À</mat-label>
+      <input matInput [matDatepicker]="aPicker" formControlName="dateA">
+      <mat-datepicker-toggle matSuffix [for]="aPicker"></mat-datepicker-toggle>
+      <mat-datepicker #aPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button (click)="onSubmit()" [disabled]="demandeForm.invalid">Submit</button>
+</div>

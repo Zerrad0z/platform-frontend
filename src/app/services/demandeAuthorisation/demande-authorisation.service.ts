@@ -8,14 +8,16 @@ import { DemandeAuthorisation } from 'src/app/models/demandeAuthorisation.model'
 })
 export class DemandeAuthorisationService {
 
-  private apiUrl = 'http://localhost:8092/demande-authorisations'; 
+  private baseUrl = 'http://localhost:8092/api';
+  private baseUrl2 = 'http://localhost:8092//demande-authorisations';
 
   constructor(private http: HttpClient) { }
 
-  getAllDemandeAuthorisations(): Observable<DemandeAuthorisation[]> {
-    return this.http.get<DemandeAuthorisation[]>(`${this.apiUrl}`);
-  }
   createDemandeAuthorisation(demande: DemandeAuthorisation): Observable<DemandeAuthorisation> {
-    return this.http.post<DemandeAuthorisation>(`${this.apiUrl}/demande-authorisations`, demande);
+    return this.http.post<DemandeAuthorisation>(`${this.baseUrl2}/create`, demande);
+  }
+
+  getAllDemandeAuthorisations(): Observable<DemandeAuthorisation[]> {
+    return this.http.get<DemandeAuthorisation[]>(`${this.baseUrl}/list`);
   }
 }

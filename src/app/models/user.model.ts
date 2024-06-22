@@ -1,9 +1,12 @@
-// src/app/models/user.model.ts
+import { Permission } from "./permission.model";
+import { Role } from "./role.model";
+
 export interface User {
-    id: number;
-    name: string;
-    email: string;
-    role: string;
-    roles: string[];
-  }
-  
+  id: number;
+  username: string;
+  email: string;
+  password: string;
+  roles: Role[]; // 
+  permissions: Permission[];
+  apiKey: string;
+}

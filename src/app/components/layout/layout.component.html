@@ -1,15 +1,15 @@
 <mat-toolbar color="primary">
-    <span style="flex: 1 1 auto;">
-      <button mat-button routerLink="/home">Accueil</button>
-      <button mat-button routerLink="/apis">Liste des APIs</button>
-      <button mat-button routerLink="/support">Support</button>
-    </span>
-    <button mat-icon-button [matMenuTriggerFor]="profileMenu">
-      <mat-icon>account_circle</mat-icon>
-    </button>
-    <mat-menu #profileMenu="matMenu">
-      <button mat-menu-item routerLink="/profile">Profile</button>
-      <button mat-menu-item (click)="logout()">Logout</button>
-    </mat-menu>
-  </mat-toolbar>
-  
+  <span style="flex: 1 1 auto;">
+    <button mat-button routerLink="/home">Accueil</button>
+    <button mat-button routerLink="/apis">Liste des APIs</button>
+    <button mat-button routerLink="/support">Support</button>
+  </span>
+  <button mat-icon-button [matMenuTriggerFor]="profileMenu">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <mat-menu #profileMenu="matMenu">
+    <button mat-menu-item routerLink="/profile">Profile</button>
+    <button mat-menu-item (click)="logout()">Logout</button>
+  </mat-menu>
+</mat-toolbar>
+<router-outlet></router-outlet>

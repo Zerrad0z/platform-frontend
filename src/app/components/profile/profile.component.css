@@ -1,0 +1,22 @@
+.user-profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .user-profile-card {
+    width: 600px;
+  }
+  
+  .account-details {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  

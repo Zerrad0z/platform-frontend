@@ -7,7 +7,7 @@ import { Api } from 'src/app/models/api.model';
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'http://localhost:8092/api'; // Adjust the URL to your backend
+  private baseUrl = 'http://localhost:8092/api'; 
 
   constructor(private http: HttpClient) { }
 

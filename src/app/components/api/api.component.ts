@@ -46,31 +46,24 @@ export class ApiComponent implements OnInit {
     this.dataSource.filter = filterValue;
   }
 
-  clearFilter(): void {
-    const filterInput = document.querySelector('input[matInput]');
-    if (filterInput) {
-      (filterInput as HTMLInputElement).value = '';
-      this.dataSource.filter = '';
-    }
-  }
-
   openDialog(apiId: number): void {
     const dialogRef = this.dialog.open(DemandeComponent, {
       width: '300px',
       data: { apiId }
     });
 
-    dialogRef.afterClosed().subscribe((result: DemandeAuthorisation) => {
+    dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        // Handle the form submission, e.g., send the data to the backend
         this.demandeAuthorisationService.createDemandeAuthorisation(result).subscribe(
           (response) => {
             console.log('Demande d\'authorisation created:', response);
             // Optionally, refresh the data or show a success message
+            alert('Demande envoyée');
+            this.fetchApis();
           },
           (error) => {
             console.error('Error creating demande d\'authorisation:', error);
-            // Handle the error, e.g., show an error message
+            alert('Failed to create demande');
           }
         );
       }

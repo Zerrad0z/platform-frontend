@@ -8,16 +8,19 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatExpansionModule } from '@angular/material/expansion';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
-
+import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatNativeDateModule } from '@angular/material/core'; // Correct import for MatNativeDateModule
 
 import { AppComponent } from './app.component';
 import { LayoutComponent } from './components/layout/layout.component';
@@ -29,6 +32,12 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthorisationComponent } from './components/authorisation/authorisation.component';
 import { DemandeAuthorisationComponent } from './components/demande-authorisation/demande-authorisation.component';
 import { DemandeComponent } from './components/demande/demande.component';
+import { AdministrationComponent } from './components/administration/administration.component';
+import { LoginComponent } from './components/login/login.component';
+import { PlatformInterceptor } from './interceptors/platform.interceptor';
+import { NotAuthorizedComponent } from './components/not-authorized/not-authorized.component';
+import { AddUserComponent } from './components/add-user/add-user.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +49,12 @@ import { DemandeComponent } from './components/demande/demande.component';
     DashboardComponent,
     AuthorisationComponent,
     DemandeAuthorisationComponent,
-    DemandeComponent
+    DemandeComponent,
+    AdministrationComponent,
+    LoginComponent,
+    NotAuthorizedComponent,
+    AddUserComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -50,6 +64,7 @@ import { DemandeComponent } from './components/demande/demande.component';
     MatIconModule,
     MatMenuModule,
     FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
@@ -58,13 +73,18 @@ import { DemandeComponent } from './components/demande/demande.component';
     MatTableModule,
     HttpClientModule,
     MatSidenavModule,
-    MatToolbarModule,
     MatListModule,
     MatDialogModule,
     MatDatepickerModule,
-    AppRoutingModule
+    MatNativeDateModule, // Import MatNativeDateModule here
+    MatCardModule,
+    AppRoutingModule,
+    MatSelectModule,
+    MatSnackBarModule 
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: PlatformInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
