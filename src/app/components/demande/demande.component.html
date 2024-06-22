@@ -1,27 +1,32 @@
-<h1 mat-dialog-title>Demande Authorisation</h1>
+<h1 mat-dialog-title>Demande d'authorisation</h1>
 <div mat-dialog-content>
-  <form [formGroup]="demandeForm">
-    <mat-form-field class="full-width">
-      <mat-label>Date De</mat-label>
-      <input matInput [matDatepicker]="dePicker" formControlName="dateDe">
-      <mat-datepicker-toggle matSuffix [for]="dePicker"></mat-datepicker-toggle>
-      <mat-datepicker #dePicker></mat-datepicker>
-    </mat-form-field>
-
-    <mat-form-field class="full-width">
-      <mat-label>Date À</mat-label>
-      <input matInput [matDatepicker]="aPicker" formControlName="dateA">
-      <mat-datepicker-toggle matSuffix [for]="aPicker"></mat-datepicker-toggle>
-      <mat-datepicker #aPicker></mat-datepicker>
-    </mat-form-field>
-
-    <mat-form-field class="full-width">
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill">
       <mat-label>Description</mat-label>
-      <textarea matInput formControlName="description"></textarea>
+      <input matInput formControlName="description">
     </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Start Date</mat-label>
+      <input matInput [matDatepicker]="startDate" formControlName="startDate">
+      <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+      <mat-datepicker #startDate></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>End Date</mat-label>
+      <input matInput [matDatepicker]="endDate" formControlName="endDate">
+      <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+      <mat-datepicker #endDate></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Hidden API ID field -->
+    <input formControlName="apiId" type="hidden">
+    <!-- Hidden User ID field -->
+    <input formControlName="userId" type="hidden">
   </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-button (click)="onSubmit()" [disabled]="demandeForm.invalid">Submit</button>
+  <button mat-button (click)="onSubmit()">Submit</button>
+  <button mat-button mat-dialog-close>Cancel</button>
 </div>

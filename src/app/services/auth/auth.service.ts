@@ -15,11 +15,11 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  public login(username: string, password: string) {
+  public login(email: string, password: string) {
     let options = {
       headers: new HttpHeaders().set("Content-Type", "application/x-www-form-urlencoded")
-    }
-    let params = new HttpParams().set("username", username).set("password", password);
+    };
+    let params = new HttpParams().set("email", email).set("password", password);
     return this.http.post(this.loginUrl, params, options);
   }
 

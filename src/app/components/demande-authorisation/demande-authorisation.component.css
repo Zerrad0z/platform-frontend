@@ -11,3 +11,16 @@
     padding: 0; /* Adjust padding if needed */
     box-shadow: 0 4px 8px rgba(1, 0, 0, 0.1); /* Add shadow to the toolbar */
   }
+
+  .approved {
+    color: green;
+  }
+
+  .rejected {
+    color: red;
+  }
+
+  .pending {
+    color: orange;
+  }
+

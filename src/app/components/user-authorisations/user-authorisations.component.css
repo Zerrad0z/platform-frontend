@@ -1,0 +1,17 @@
+.user-authorisations-container {
+    padding: 20px 40px;
+  }
+  
+  .table-wrapper {
+    margin: 0 auto;
+    max-width: 800px;
+  }
+  
+  .status-active {
+    color: green;
+  }
+  
+  .status-inactive {
+    color: red;
+  }
+  

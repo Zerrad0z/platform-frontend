@@ -1,9 +1,10 @@
-// src/app/models/authorisation.model.ts
 export interface Authorisation {
   authorisationId: number;
   userId: number;
+  username: string; // Add this property
   apiId: number;
-  startDate: string;
-  endDate: string;
+  apiName: string; // Add this property
+  startDate: Date;
+  endDate: Date;
   status: boolean;
 }

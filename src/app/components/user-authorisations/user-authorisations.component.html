@@ -1,0 +1,31 @@
+<!-- user-authorisations.component.html -->
+<div class="user-authorisations-container">
+  <h1>My Subscriptions</h1>
+  <div class="table-wrapper">
+    <table mat-table [dataSource]="authorisations" class="mat-elevation-z8">
+      <ng-container matColumnDef="apiId">
+        <th mat-header-cell *matHeaderCellDef> API ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.apiId}} </td>
+      </ng-container>
+      <ng-container matColumnDef="startDate">
+        <th mat-header-cell *matHeaderCellDef> Start Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.startDate | date}} </td>
+      </ng-container>
+      <ng-container matColumnDef="endDate">
+        <th mat-header-cell *matHeaderCellDef> End Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.endDate | date}} </td>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let element"> 
+          <span [ngClass]="{'status-active': element.status, 'status-inactive': !element.status}">
+            {{element.status ? 'Active' : 'Inactive'}}
+          </span> 
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="['apiId', 'startDate', 'endDate', 'status']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['apiId', 'startDate', 'endDate', 'status'];"></tr>
+    </table>
+  </div>
+</div>
+

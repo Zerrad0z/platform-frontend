@@ -11,7 +11,7 @@ import { DemandeAuthorisation } from 'src/app/models/demandeAuthorisation.model'
   styleUrls: ['./demande-authorisation.component.css']
 })
 export class DemandeAuthorisationComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'description', 'userId', 'apiId', 'startDate', 'endDate', 'approved'];
+  displayedColumns: string[] = ['id', 'description', 'username', 'apiName', 'startDate', 'endDate', 'approved', 'actions'];
   dataSource = new MatTableDataSource<DemandeAuthorisation>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -25,6 +25,7 @@ export class DemandeAuthorisationComponent implements OnInit {
 
   fetchDemandeAuthorisations(): void {
     this.demandeAuthorisationService.getAllDemandeAuthorisations().subscribe((data: DemandeAuthorisation[]) => {
+      console.log('Fetched demandes:', data); // Debugging line
       this.dataSource.data = data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -44,5 +45,21 @@ export class DemandeAuthorisationComponent implements OnInit {
       (filterInput as HTMLInputElement).value = '';
       this.dataSource.filter = '';
     }
+  }
+
+  approveDemande(id: number): void {
+    this.demandeAuthorisationService.approveDemande(id).subscribe(() => {
+      this.dataSource.data = this.dataSource.data.filter(demande => demande.id !== id);
+    }, error => {
+      console.error('Error approving demande:', error);
+    });
+  }
+
+  rejectDemande(id: number): void {
+    this.demandeAuthorisationService.rejectDemande(id).subscribe(() => {
+      this.dataSource.data = this.dataSource.data.filter(demande => demande.id !== id);
+    }, error => {
+      console.error('Error refusing demande:', error);
+    });
   }
 }

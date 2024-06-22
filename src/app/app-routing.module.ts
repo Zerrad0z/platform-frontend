@@ -14,6 +14,8 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { UserDemandesComponent } from './components/user-demandes/user-demandes.component';
+import { UserAuthorisationsComponent } from './components/user-authorisations/user-authorisations.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -21,11 +23,14 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
+    canActivate: [authenticationGuard],
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'apis', component: ApiComponent },
       { path: 'support', component: ApiComponent },
-      { path: 'profile', component: ProfileComponent}
+      { path: 'profile', component: ProfileComponent },
+      { path: 'demandes', component: UserDemandesComponent },
+      { path: 'subscriptions', component: UserAuthorisationsComponent }
     ]
   },
   {

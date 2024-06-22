@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { User } from 'src/app/models/user.model';
@@ -11,6 +11,7 @@ import { Role } from 'src/app/models/role.model';
 export class UserService {
 
   private baseUrl = 'http://localhost:8092/users'; 
+  private profileUrl = 'http://localhost:8092/profile';
 
   constructor(private http: HttpClient) { }
 
@@ -51,7 +52,13 @@ export class UserService {
     console.error(errorMessage);
     return throwError(errorMessage);
   }
+
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/profile`);
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    });
+    return this.http.get<User>(this.profileUrl, { headers }).pipe(
+      catchError(this.handleError)
+    );
   }
 }

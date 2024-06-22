@@ -20,7 +20,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatNativeDateModule } from '@angular/material/core'; // Correct import for MatNativeDateModule
+import { MatNativeDateModule } from '@angular/material/core';
+import { DatePipe } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+
 
 import { AppComponent } from './app.component';
 import { LayoutComponent } from './components/layout/layout.component';
@@ -38,6 +42,9 @@ import { PlatformInterceptor } from './interceptors/platform.interceptor';
 import { NotAuthorizedComponent } from './components/not-authorized/not-authorized.component';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { UserAuthorisationsComponent } from './components/user-authorisations/user-authorisations.component';
+import { UserDemandesComponent } from './components/user-demandes/user-demandes.component';
+import { EditEndDateDialogComponent } from './components/edit-end-date-dialog/edit-end-date-dialog.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +61,10 @@ import { ProfileComponent } from './components/profile/profile.component';
     LoginComponent,
     NotAuthorizedComponent,
     AddUserComponent,
-    ProfileComponent
+    ProfileComponent,
+    UserAuthorisationsComponent,
+    UserDemandesComponent,
+    EditEndDateDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -76,13 +86,15 @@ import { ProfileComponent } from './components/profile/profile.component';
     MatListModule,
     MatDialogModule,
     MatDatepickerModule,
-    MatNativeDateModule, // Import MatNativeDateModule here
+    MatNativeDateModule, 
     MatCardModule,
     AppRoutingModule,
     MatSelectModule,
+    MatTooltipModule,
     MatSnackBarModule 
   ],
   providers: [
+    DatePipe,
     { provide: HTTP_INTERCEPTORS, useClass: PlatformInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

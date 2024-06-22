@@ -9,6 +9,7 @@ import { User } from 'src/app/models/user.model';
 })
 export class ProfileComponent implements OnInit {
   user!: User;
+  errorMessage!: string;
 
   constructor(private userService: UserService) {}
 
@@ -19,7 +20,12 @@ export class ProfileComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching user profile', error);
+        this.errorMessage = 'Error fetching user profile';
       }
     );
+  }
+
+  getRoleNames(user: User): string {
+    return user.roles ? user.roles.map(role => role.name).join(', ') : 'Loading...';
   }
 }

@@ -1,20 +1,26 @@
-<div class="user-profile-container">
-    <h1>User profile</h1>
-    <mat-card class="user-profile-card">
-      <mat-card-content>
-        <h2>Account details</h2>
-        <div class="account-details">
-          <div>
-            <p><strong>Email:</strong> {{ user.email }}</p>
-            <p><strong>First name:</strong> {{ user.username }}</p>
-          </div>
+<div class="user-profile-container" *ngIf="user">
+  <h1>User profile</h1>
+  <mat-card class="user-profile-card">
+    <mat-card-content>
+      <h2>Account details</h2>
+      <div class="account-details">
+        <div>
+          <p><strong>Username:</strong> {{ user.username }}</p>
+          <p><strong>Email:</strong> {{ user.email }}</p>
+          <p><strong>Roles:</strong> {{ getRoleNames(user) }}</p>
         </div>
-        <div class="action-buttons">
-          <button mat-raised-button color="primary">Change name</button>
-          <button mat-raised-button color="accent">Change password</button>
-          <button mat-raised-button color="warn">Close account</button>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
-  
+      </div>
+      <div class="action-buttons">
+        <button mat-raised-button color="primary">Change name</button>
+        <button mat-raised-button color="accent">Change password</button>
+        <button mat-raised-button color="warn">Close account</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div *ngIf="!user && !errorMessage">
+  <p>Loading user profile...</p>
+</div>
+<div *ngIf="errorMessage">
+  <p>{{ errorMessage }}</p>
+</div>
