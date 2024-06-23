@@ -1,19 +1,18 @@
 .mat-toolbar {
   display: flex;
   justify-content: space-between;
-  background-color: #3c3c3b; /* Change the color to your branding */
-  position: sticky; /* Make the toolbar fixed */
+  background-color: #3c3c3b;
+  position: sticky;
   top: 0;
-  width: 100%; /* Make sure it spans the full width */
-  z-index: 1000; /* Ensure it stays on top */
+  width: 100%;
+  z-index: 1000;
 }
 
-  button[mat-button] {
-    color: white;
-    font-weight: bold;
-  }
-  
-  button[mat-menu-item] {
-    color: black;
-  }
-  
+button[mat-button] {
+  color: white;
+  font-weight: bold;
+}
+
+button[mat-menu-item] {
+  color: black;
+}

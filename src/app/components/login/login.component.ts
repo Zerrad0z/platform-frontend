@@ -1,37 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
-  formLogin!: FormGroup;
+export class LoginComponent {
+  formLogin: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
-
-  ngOnInit(): void {
+  constructor(private fb: FormBuilder, private authService: AuthService) {
     this.formLogin = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', [Validators.required]]
     });
   }
 
-  handleLogin(): void {
-    let email = this.formLogin.value.email;
-    let password = this.formLogin.value.password;
-    
-    this.authService.login(email, password).subscribe({
-      next: data => {
-        this.authService.loadProfile(data);
-        this.router.navigateByUrl("/admin");
+  ngOnInit(): void {}
+
+  handleLogin() {
+    const email = this.formLogin.get('email')?.value;
+    const password = this.formLogin.get('password')?.value;
+
+    this.authService.login(email, password).subscribe(
+      (response) => {
+        console.log('Login successful:', response);
+        this.authService.loadProfile(response);
       },
-      error: err => {
-        console.error(err);
+      (error: HttpErrorResponse) => {
+        console.error('Login error:', error);
+        if (error.status === 401) {
+          alert('Unauthorized: Invalid email or password.');
+        } else {
+          alert('An error occurred during login. Please try again.');
+        }
       }
-    });
+    );
   }
 }

@@ -23,8 +23,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
-
+import { DragDropModule } from '@angular/cdk/drag-drop'; // Import Angular CDK DragDropModule
 
 import { AppComponent } from './app.component';
 import { LayoutComponent } from './components/layout/layout.component';
@@ -36,7 +35,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthorisationComponent } from './components/authorisation/authorisation.component';
 import { DemandeAuthorisationComponent } from './components/demande-authorisation/demande-authorisation.component';
 import { DemandeComponent } from './components/demande/demande.component';
-import { AdministrationComponent } from './components/administration/administration.component';
 import { LoginComponent } from './components/login/login.component';
 import { PlatformInterceptor } from './interceptors/platform.interceptor';
 import { NotAuthorizedComponent } from './components/not-authorized/not-authorized.component';
@@ -45,6 +43,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { UserAuthorisationsComponent } from './components/user-authorisations/user-authorisations.component';
 import { UserDemandesComponent } from './components/user-demandes/user-demandes.component';
 import { EditEndDateDialogComponent } from './components/edit-end-date-dialog/edit-end-date-dialog.component';
+import { EditUserComponent } from './components/edit-user/edit-user.component';
 
 @NgModule({
   declarations: [
@@ -57,14 +56,14 @@ import { EditEndDateDialogComponent } from './components/edit-end-date-dialog/ed
     AuthorisationComponent,
     DemandeAuthorisationComponent,
     DemandeComponent,
-    AdministrationComponent,
     LoginComponent,
     NotAuthorizedComponent,
     AddUserComponent,
     ProfileComponent,
     UserAuthorisationsComponent,
     UserDemandesComponent,
-    EditEndDateDialogComponent
+    EditEndDateDialogComponent,
+    EditUserComponent
   ],
   imports: [
     BrowserModule,
@@ -91,7 +90,8 @@ import { EditEndDateDialogComponent } from './components/edit-end-date-dialog/ed
     AppRoutingModule,
     MatSelectModule,
     MatTooltipModule,
-    MatSnackBarModule 
+    MatSnackBarModule,
+    DragDropModule // Add DragDropModule here
   ],
   providers: [
     DatePipe,

@@ -2,62 +2,65 @@
   <mat-sidenav mode="side" opened class="sidenav">
     <mat-toolbar>Dashboard</mat-toolbar>
     <mat-nav-list>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
+      <mat-expansion-panel *ngIf="isAdmin">
+        <mat-expansion-panel-header class="panel-header">
           <mat-panel-title>
             <mat-icon>people</mat-icon>
-            Manage Users
+            <span>Manage Users</span>
           </mat-panel-title>
         </mat-expansion-panel-header>
+        <mat-divider></mat-divider>
         <mat-list-item>
-          <mat-icon matListIcon>person</mat-icon>
-          <a matLine routerLink="/admin/users">Users</a>
+          <mat-icon class="icons" matListIcon>person</mat-icon>
+          <a matLine routerLink="/admin/users" routerLinkActive="active" class="no-underline">Users</a>
         </mat-list-item>
         <mat-list-item>
-          <mat-icon matListIcon>admin_panel_settings</mat-icon>
-          <a matLine routerLink="/admin/admins">Admins</a>
+          <mat-icon class="icons" matListIcon>admin_panel_settings</mat-icon>
+          <a matLine routerLink="/admin/admins" routerLinkActive="active" class="no-underline">Admins</a>
         </mat-list-item>
         <mat-list-item>
-          <mat-icon matListIcon>person_add</mat-icon>
-          <a matLine routerLink="/admin/add-user">Add User</a>
+          <mat-icon class="icons" matListIcon>person_add</mat-icon>
+          <a matLine routerLink="/admin/add-user" routerLinkActive="active" class="no-underline">Add User</a>
         </mat-list-item>
       </mat-expansion-panel>
 
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
+      <mat-expansion-panel *ngIf="isAdmin">
+        <mat-expansion-panel-header class="panel-header">
           <mat-panel-title>
             <mat-icon>api</mat-icon>
-            Manage APIs
+            <span>Manage APIs</span>
           </mat-panel-title>
         </mat-expansion-panel-header>
+        <mat-divider></mat-divider>
         <mat-list-item>
-          <mat-icon matListIcon>hourglass_empty</mat-icon>
-          <a matLine routerLink="/admin/demandes">Demandes</a>
+          <mat-icon class="icons" matListIcon>hourglass_empty</mat-icon>
+          <a matLine routerLink="/admin/demandes" routerLinkActive="active" class="no-underline">Demandes</a>
         </mat-list-item>
         <mat-list-item>
-          <mat-icon matListIcon>verified</mat-icon>
-          <a matLine routerLink="/admin/approuves">Autorisés</a>
+          <mat-icon class="icons" matListIcon>verified</mat-icon>
+          <a matLine routerLink="/admin/approuves" routerLinkActive="active" class="no-underline">Autorisés</a>
         </mat-list-item>
       </mat-expansion-panel>
 
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
+      <mat-expansion-panel *ngIf="isAdmin">
+        <mat-expansion-panel-header class="panel-header">
           <mat-panel-title>
             <mat-icon>settings</mat-icon>
-            Settings
+            <span>Settings</span>
           </mat-panel-title>
         </mat-expansion-panel-header>
+        <mat-divider></mat-divider>
         <mat-list-item>
           <mat-icon matListIcon>settings</mat-icon>
-          <a matLine routerLink="/settings">Settings</a>
+          <a matLine routerLink="/settings" routerLinkActive="active" class="no-underline">Settings</a>
         </mat-list-item>
       </mat-expansion-panel>
     </mat-nav-list>
 
-    <div style="margin-top: auto;">
+    <div class="logout-container">
       <mat-divider></mat-divider>
-      <mat-list-item (click)="logout()">
-        <mat-icon matListIcon>exit_to_app</mat-icon>
+      <mat-list-item (click)="logout()" class="logout-button">
+        <mat-icon class="icons" matListIcon>exit_to_app</mat-icon>
         <span matLine>Logout</span>
       </mat-list-item>
     </div>
@@ -65,7 +68,7 @@
 
   <mat-sidenav-content class="sidenav-content">
     <div class="content">
-      <router-outlet></router-outlet>
+      <router-outlet></router-outlet> <!-- This will load the child routes -->
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

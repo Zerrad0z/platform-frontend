@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/models/user.model';
 import { Role } from 'src/app/models/role.model';
@@ -13,13 +14,13 @@ import { Role } from 'src/app/models/role.model';
 })
 export class UserComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'username', 'email', 'role'];
+  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'edit'];
   dataSource = new MatTableDataSource<User>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
     this.fetchUsers();
@@ -60,5 +61,9 @@ export class UserComponent implements OnInit {
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.dataSource.filter = filterValue;
+  }
+
+  editUser(user: User): void {
+    this.router.navigate(['/admin/edit-user', user.id]);
   }
 }

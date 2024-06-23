@@ -28,9 +28,10 @@ export class ApiComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log('ApiComponent initialized');
     this.fetchApis();
   }
-
+  
   fetchApis(): void {
     this.apiService.getAllAPIs().subscribe((data: Api[]) => {
       this.dataSource.data = data;

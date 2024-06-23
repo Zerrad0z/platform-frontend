@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { User } from 'src/app/models/user.model';
-import { Role } from 'src/app/models/role.model';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable, catchError, throwError } from "rxjs";
+import { Permission } from "src/app/models/permission.model";
+import { Role } from "src/app/models/role.model";
+import { User } from "src/app/models/user.model";
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +40,26 @@ export class UserService {
     );
   }
 
+  getUserById(userId: number): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/${userId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
+  getCurrentUser(): Observable<User> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    });
+    return this.http.get<User>(this.profileUrl, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  updateUser(user: User): Observable<User> {
+    return this.http.put<User>(`${this.baseUrl}/${user.id}`, user).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
     if (error.error instanceof ErrorEvent) {
@@ -51,14 +71,5 @@ export class UserService {
     }
     console.error(errorMessage);
     return throwError(errorMessage);
-  }
-
-  getCurrentUser(): Observable<User> {
-    const headers = new HttpHeaders({
-      'Authorization': 'Bearer ' + localStorage.getItem('token')
-    });
-    return this.http.get<User>(this.profileUrl, { headers }).pipe(
-      catchError(this.handleError)
-    );
   }
 }

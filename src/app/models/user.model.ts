@@ -10,3 +10,5 @@ export interface User {
   permissions: Permission[];
   apiKey: string;
 }
+
+

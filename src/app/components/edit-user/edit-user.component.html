@@ -1,0 +1,101 @@
+<mat-toolbar color="primary">
+  <span>Edit User</span>
+</mat-toolbar>
+
+<div class="edit-user-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Edit User Roles and Permissions</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form (ngSubmit)="saveChanges()">
+        <!-- User Details Section -->
+        <mat-form-field appearance="fill">
+          <mat-label>Username</mat-label>
+          <input matInput [(ngModel)]="user.username" name="username" disabled>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput [(ngModel)]="user.email" name="email" disabled>
+        </mat-form-field>
+<p></p>
+        <!-- Roles Section -->
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Roles</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="roles-section" cdkDropListGroup>
+              <div class="example-container">
+                <h4>Current Roles</h4>
+                <div
+                  cdkDropList
+                  #userRolesList="cdkDropList"
+                  [cdkDropListData]="user.roles"
+                  [cdkDropListConnectedTo]="['availableRolesList']"
+                  class="example-list"
+                  (cdkDropListDropped)="dropRole($event)">
+                  <div class="example-box" *ngFor="let role of user.roles" cdkDrag>{{role.name}}</div>
+                </div>
+              </div>
+              <div class="example-container">
+                <h4>Available Roles</h4>
+                <div
+                  cdkDropList
+                  #availableRolesList="cdkDropList"
+                  [cdkDropListData]="allRoles"
+                  [cdkDropListConnectedTo]="['userRolesList']"
+                  class="example-list"
+                  (cdkDropListDropped)="dropRole($event)">
+                  <div class="example-box" *ngFor="let role of allRoles" cdkDrag>{{role.name}}</div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+<p></p>
+        <!-- Permissions Section -->
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Permissions</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="permissions-section" cdkDropListGroup>
+              <div class="example-container">
+                <h4>Current Permissions</h4>
+                <div
+                  cdkDropList
+                  #userPermissionsList="cdkDropList"
+                  [cdkDropListData]="user.permissions"
+                  [cdkDropListConnectedTo]="['availablePermissionsList']"
+                  class="example-list"
+                  (cdkDropListDropped)="dropPermission($event)">
+                  <div class="example-box" *ngFor="let permission of user.permissions" cdkDrag>{{permission.name}}</div>
+                </div>
+              </div>
+              <div class="example-container">
+                <h4>Available Permissions</h4>
+                <div
+                  cdkDropList
+                  #availablePermissionsList="cdkDropList"
+                  [cdkDropListData]="allPermissions"
+                  [cdkDropListConnectedTo]="['userPermissionsList']"
+                  class="example-list"
+                  (cdkDropListDropped)="dropPermission($event)">
+                  <div class="example-box" *ngFor="let permission of allPermissions" cdkDrag>{{permission.name}}</div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Action Buttons -->
+        <div class="button-group">
+          <button mat-raised-button color="primary" type="submit">Save</button>
+          <button mat-raised-button color="warn" type="button" (click)="cancel()">Cancel</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
