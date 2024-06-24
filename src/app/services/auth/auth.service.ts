@@ -15,7 +15,6 @@ interface LoginResponse {
 })
 export class AuthService {
   private loginUrl = 'http://localhost:8092/auth/login';
-
   isAuthenticated: boolean = false;
   roles: string[] = [];
   permissions: string[] = [];
@@ -23,16 +22,28 @@ export class AuthService {
   departmentId: string | undefined;
   accessToken!: string;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    this.initializeAuthState();
+  }
+
+  private initializeAuthState(): void {
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.accessToken = token;
+      this.isAuthenticated = true;
+      this.loadProfile({ 'access-token': token });
+    }
+  }
 
   public login(email: string, password: string): Observable<LoginResponse> {
-    let options = {
+    const options = {
       headers: new HttpHeaders().set("Content-Type", "application/x-www-form-urlencoded")
     };
-    let params = new HttpParams().set("email", email).set("password", password);
+    const params = new HttpParams().set("email", email).set("password", password);
     return this.http.post<LoginResponse>(this.loginUrl, params, options).pipe(
       map(response => {
         if (response && response['access-token']) {
+          this.loadProfile(response);
           return response;
         } else {
           throw new Error('Invalid login response');
@@ -46,23 +57,19 @@ export class AuthService {
   }
 
   loadProfile(data: LoginResponse): void {
-
     this.isAuthenticated = true;
     this.accessToken = data['access-token'];
-
     if (typeof this.accessToken === 'string') {
       try {
         const decodedJwt: any = jwtDecode(this.accessToken);
-        console.log('Decoded JWT:', decodedJwt);
         if (decodedJwt && decodedJwt.sub) {
           this.username = decodedJwt.sub;
           this.roles = decodedJwt.scope ? decodedJwt.scope.split(' ') : [];
           this.permissions = decodedJwt.permissions ? decodedJwt.permissions.split(' ') : [];
-          this.departmentId = decodedJwt.department_id; 
-
+          this.departmentId = decodedJwt.department_id;
           localStorage.setItem('token', this.accessToken);
 
-
+          // Redirect based on roles
           if (this.hasRole('ADMIN') || this.hasRole('SUPERADMIN')) {
             this.router.navigate(['/admin/dashboard']);
           } else {
@@ -92,8 +99,7 @@ export class AuthService {
   }
 
   hasPermission(permission: string): boolean {
-    const hasPerm = this.permissions.includes(permission);
-    return hasPerm;
+    return this.permissions.includes(permission);
   }
 
   getRoles(): string[] {

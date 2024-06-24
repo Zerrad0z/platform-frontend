@@ -24,7 +24,9 @@
         <mat-expansion-panel-header class="panel-header">
           <mat-panel-title>
             <mat-icon>api</mat-icon>
-            <span>Manage APIs</span>
+            <span (click)="markAsRead()">Manage APIs</span>
+            <span *ngIf="notificationCount > 0" class="notification-dot">{{ notificationCount }}</span>
+
           </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-divider></mat-divider>

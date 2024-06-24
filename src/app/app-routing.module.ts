@@ -20,16 +20,16 @@ import { UserComponent } from './components/user/user.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { AddApiComponent } from './components/add-api/add-api.component';
 import { EditApiComponent } from './components/edit-api/edit-api.component';
+import { roleRedirectionGuard } from './guards/role-redirection.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'registration', component: RegistrationComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Correct redirection for root path
   {
     path: '',
     component: LayoutComponent,
-    canActivate: [authenticationGuard, authorisationGuard],
-    data: { roles: ['USER', 'SUPERADMIN'] },
+    canActivate: [authenticationGuard],
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'apis', component: ApiComponent, canActivate: [permissionGuard], data: { permission: 'BROWSE_APIS' } },
@@ -45,21 +45,20 @@ const routes: Routes = [
     canActivate: [authenticationGuard, authorisationGuard],
     data: { roles: ['ADMIN', 'SUPERADMIN'] },
     children: [
-      { path: '', component: UserComponent },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'users', component: UserComponent },
       { path: 'approuves', component: AuthorisationComponent },
       { path: 'demandes', component: DemandeAuthorisationComponent },
       { path: 'add-user', component: AddUserComponent },
       { path: 'edit-user/:id', component: EditUserComponent },
-      { path: 'api-list', component: EditApiComponent, canActivate: [permissionGuard], data: { permission: 'MANAGE_APIS' } }, 
-      { path: 'add-api', component: AddApiComponent, canActivate: [permissionGuard], data: { permission: 'MANAGE_APIS' } } 
+      { path: 'api-list', component: EditApiComponent, canActivate: [permissionGuard], data: { permission: 'MANAGE_APIS' } },
+      { path: 'add-api', component: AddApiComponent, canActivate: [permissionGuard], data: { permission: 'MANAGE_APIS' } }
     ]
   },
   { path: 'notAuthorized', component: NotAuthorizedComponent },
   { path: '**', redirectTo: '/home' }
 ];
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
