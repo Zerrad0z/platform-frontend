@@ -25,6 +25,7 @@ export class EditUserComponent implements OnInit {
   };
   allRoles: Role[] = [];
   allPermissions: Permission[] = [];
+  departmentId: number = 1; // Assuming you have a way to get the department ID of the current user
 
   constructor(
     private route: ActivatedRoute,
@@ -44,7 +45,7 @@ export class EditUserComponent implements OnInit {
   }
 
   fetchUser(userId: number): void {
-    this.userService.getUserById(userId).subscribe(
+    this.userService.getUserById(userId, this.departmentId).subscribe(
       (user: User) => {
         this.user = user;
         this.filterAvailableRolesAndPermissions();
@@ -101,7 +102,7 @@ export class EditUserComponent implements OnInit {
   }
 
   saveChanges(): void {
-    this.userService.updateUser(this.user).subscribe(
+    this.userService.updateUser(this.user, this.departmentId).subscribe(
       () => {
         console.log('User updated successfully');
         this.router.navigate(['/admin/users']);

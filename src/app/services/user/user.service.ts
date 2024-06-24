@@ -14,48 +14,28 @@ export class UserService {
   private profileUrl = 'http://localhost:8092/profile';
 
   constructor(private http: HttpClient) { }
-
-  addUser(user: {
-    username: string,
-    email: string,
-    password: string,
-    apiKey: string,
-    roles: Set<string>,
-    permissions: Set<string>
-  }): Observable<User> {
-    return this.http.post<User>(`${this.baseUrl}/add`, user).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.baseUrl}/`).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  getUserRoles(userId: number): Observable<Role[]> {
-    return this.http.get<Role[]>(`${this.baseUrl}/${userId}/roles`).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  getUserById(userId: number): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/${userId}`).pipe(
-      catchError(this.handleError)
-    );
-  }
   
-  getCurrentUser(): Observable<User> {
+  addUser(user: { email: string, roles: any[], permissions: any[] }, departmentId: number): Observable<User> {
+    const headers = { 'Department-Id': departmentId.toString() };
+    return this.http.post<User>(`${this.baseUrl}/add`, user, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  completeRegistration(token: string, username: string, password: string): Observable<any> {
+    const body = { token, username, password };
+    const headers = new HttpHeaders();
+    console.log("Sending complete registration request with body:", body);
+    return this.http.post<any>(`${this.baseUrl}/complete-registration`, body, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getApiKey(): Observable<string> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + localStorage.getItem('token')
     });
-    return this.http.get<User>(this.profileUrl, { headers }).pipe(
-      catchError(this.handleError)
-    );
-  }
-  updateUser(user: User): Observable<User> {
-    return this.http.put<User>(`${this.baseUrl}/${user.id}`, user).pipe(
+    return this.http.get<string>(`${this.baseUrl}/api-key`, { headers }).pipe(
       catchError(this.handleError)
     );
   }
@@ -71,5 +51,42 @@ export class UserService {
     }
     console.error(errorMessage);
     return throwError(errorMessage);
+  }
+
+  getAllUsers(departmentId: number): Observable<User[]> {
+    const headers = new HttpHeaders().set('Department-Id', departmentId.toString());
+    return this.http.get<User[]>(`${this.baseUrl}/`, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getUserRoles(userId: number, departmentId: number): Observable<Role[]> {
+    const headers = new HttpHeaders().set('Department-Id', departmentId.toString());
+    return this.http.get<Role[]>(`${this.baseUrl}/${userId}/roles`, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getUserById(userId: number, departmentId: number): Observable<User> {
+    const headers = new HttpHeaders().set('Department-Id', departmentId.toString());
+    return this.http.get<User>(`${this.baseUrl}/${userId}`, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
+  getCurrentUser(): Observable<User> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    });
+    return this.http.get<User>(this.profileUrl, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  updateUser(user: User, departmentId: number): Observable<User> {
+    const headers = new HttpHeaders().set('Department-Id', departmentId.toString());
+    return this.http.put<User>(`${this.baseUrl}/${user.id}`, user, { headers }).pipe(
+      catchError(this.handleError)
+    );
   }
 }

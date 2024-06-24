@@ -27,7 +27,8 @@ export class UserComponent implements OnInit {
   }
 
   fetchUsers(): void {
-    this.userService.getAllUsers().subscribe(
+    const departmentId = 1; // Assuming you have a way to get the department ID of the current user
+    this.userService.getAllUsers(departmentId).subscribe(
       (users: User[]) => {
         this.dataSource.data = users;
         this.dataSource.paginator = this.paginator;
@@ -41,8 +42,9 @@ export class UserComponent implements OnInit {
   }
 
   fetchRolesForUsers(users: User[]): void {
+    const departmentId = 1; // Assuming you have a way to get the department ID of the current user
     users.forEach(user => {
-      this.userService.getUserRoles(user.id).subscribe(
+      this.userService.getUserRoles(user.id, departmentId).subscribe(
         (roles: Role[]) => {
           user.roles = roles;
           this.dataSource.data = [...this.dataSource.data]; // Trigger change detection

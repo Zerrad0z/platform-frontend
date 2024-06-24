@@ -2,7 +2,7 @@
   <mat-sidenav mode="side" opened class="sidenav">
     <mat-toolbar>Dashboard</mat-toolbar>
     <mat-nav-list>
-      <mat-expansion-panel *ngIf="isAdmin">
+      <mat-expansion-panel *ngIf="authService.hasPermission('MANAGE_USERS')">
         <mat-expansion-panel-header class="panel-header">
           <mat-panel-title>
             <mat-icon>people</mat-icon>
@@ -14,17 +14,13 @@
           <mat-icon class="icons" matListIcon>person</mat-icon>
           <a matLine routerLink="/admin/users" routerLinkActive="active" class="no-underline">Users</a>
         </mat-list-item>
-        <mat-list-item>
-          <mat-icon class="icons" matListIcon>admin_panel_settings</mat-icon>
-          <a matLine routerLink="/admin/admins" routerLinkActive="active" class="no-underline">Admins</a>
-        </mat-list-item>
-        <mat-list-item>
+        <mat-list-item *ngIf="authService.hasPermission('ADD_USERS')">
           <mat-icon class="icons" matListIcon>person_add</mat-icon>
           <a matLine routerLink="/admin/add-user" routerLinkActive="active" class="no-underline">Add User</a>
         </mat-list-item>
       </mat-expansion-panel>
 
-      <mat-expansion-panel *ngIf="isAdmin">
+      <mat-expansion-panel *ngIf="authService.hasPermission('MANAGE_DEMANDE')">
         <mat-expansion-panel-header class="panel-header">
           <mat-panel-title>
             <mat-icon>api</mat-icon>
@@ -34,15 +30,24 @@
         <mat-divider></mat-divider>
         <mat-list-item>
           <mat-icon class="icons" matListIcon>hourglass_empty</mat-icon>
-          <a matLine routerLink="/admin/demandes" routerLinkActive="active" class="no-underline">Demandes</a>
+          <a matLine routerLink="/admin/demandes" routerLinkActive="active" class="no-underline" (click)="markAsRead()">Demandes</a>
+          <span *ngIf="notificationCount > 0" class="notification-dot">{{ notificationCount }}</span>
         </mat-list-item>
         <mat-list-item>
           <mat-icon class="icons" matListIcon>verified</mat-icon>
           <a matLine routerLink="/admin/approuves" routerLinkActive="active" class="no-underline">Autorisés</a>
         </mat-list-item>
+        <mat-list-item *ngIf="authService.hasRole('SUPERADMIN')">
+          <mat-icon class="icons" matListIcon>edit</mat-icon>
+          <a matLine routerLink="/admin/api-list" routerLinkActive="active" class="no-underline">Edit APIs</a>
+        </mat-list-item>
+        <mat-list-item *ngIf="authService.hasRole('SUPERADMIN')">
+          <mat-icon class="icons" matListIcon>add_circle</mat-icon>
+          <a matLine routerLink="/admin/add-api" routerLinkActive="active" class="no-underline">Add New API</a>
+        </mat-list-item>
       </mat-expansion-panel>
 
-      <mat-expansion-panel *ngIf="isAdmin">
+      <mat-expansion-panel *ngIf="authService.hasPermission('MANAGE_SUBS')">
         <mat-expansion-panel-header class="panel-header">
           <mat-panel-title>
             <mat-icon>settings</mat-icon>

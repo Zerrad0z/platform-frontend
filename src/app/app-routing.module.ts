@@ -17,15 +17,19 @@ import { AuthorisationComponent } from './components/authorisation/authorisation
 import { DemandeAuthorisationComponent } from './components/demande-authorisation/demande-authorisation.component';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { UserComponent } from './components/user/user.component';
+import { RegistrationComponent } from './components/registration/registration.component';
+import { AddApiComponent } from './components/add-api/add-api.component';
+import { EditApiComponent } from './components/edit-api/edit-api.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'registration', component: RegistrationComponent },
   {
     path: '',
     component: LayoutComponent,
     canActivate: [authenticationGuard, authorisationGuard],
-    data: { roles: ['USER'] },
+    data: { roles: ['USER', 'SUPERADMIN'] },
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'apis', component: ApiComponent, canActivate: [permissionGuard], data: { permission: 'BROWSE_APIS' } },
@@ -39,7 +43,7 @@ const routes: Routes = [
     path: 'admin',
     component: DashboardComponent,
     canActivate: [authenticationGuard, authorisationGuard],
-    data: { roles: ['ADMIN'] },
+    data: { roles: ['ADMIN', 'SUPERADMIN'] },
     children: [
       { path: '', component: UserComponent },
       { path: 'dashboard', component: DashboardComponent },
@@ -48,11 +52,14 @@ const routes: Routes = [
       { path: 'demandes', component: DemandeAuthorisationComponent },
       { path: 'add-user', component: AddUserComponent },
       { path: 'edit-user/:id', component: EditUserComponent },
+      { path: 'api-list', component: EditApiComponent, canActivate: [permissionGuard], data: { permission: 'MANAGE_APIS' } }, 
+      { path: 'add-api', component: AddApiComponent, canActivate: [permissionGuard], data: { permission: 'MANAGE_APIS' } } 
     ]
   },
   { path: 'notAuthorized', component: NotAuthorizedComponent },
   { path: '**', redirectTo: '/home' }
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

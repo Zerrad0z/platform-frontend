@@ -7,15 +7,29 @@ import { Api } from 'src/app/models/api.model';
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'http://localhost:8092/api'; 
+  private apiUrl = 'http://localhost:8092/api';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  getAllAPIs(): Observable<Api[]> {
-    return this.http.get<Api[]>(`${this.baseUrl}/list`);
+  saveAPI(api: Api): Observable<Api> {
+    return this.http.post<Api>(`${this.apiUrl}/save`, api);
   }
 
-  searchApis(keyword: string): Observable<Api[]> {
-    return this.http.get<Api[]>(`${this.baseUrl}/search?keyword=${keyword}`);
+  getAllAPIs(): Observable<Api[]> {
+    return this.http.get<Api[]>(`${this.apiUrl}/list`);
+  }
+
+  getAPIById(id: number): Observable<Api> {
+    return this.http.get<Api>(`${this.apiUrl}/${id}`);
+  }
+
+  deleteAPI(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  searchApi(keyword: string): Observable<Api[]> {
+    return this.http.get<Api[]>(`${this.apiUrl}/search`, {
+      params: { keyword }
+    });
   }
 }

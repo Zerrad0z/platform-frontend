@@ -34,6 +34,7 @@ export class DemandeComponent implements OnInit {
     // Fetch the current user ID and their demandes
     this.userService.getCurrentUser().subscribe(
       (user) => {
+        console.log('Fetched user:', user); // Log user to verify
         this.form.patchValue({ userId: user.id });
         this.fetchUserDemandes(user.id);
       },
@@ -56,15 +57,19 @@ export class DemandeComponent implements OnInit {
 
   onSubmit(): void {
     if (this.form.valid) {
-      this.demandeAuthorisationService.createDemandeAuthorisation(this.form.value).subscribe(
-        (response) => {
-          console.log('Demande d\'authorisation created:', response);
-          this.dialogRef.close(response);
-        },
-        (error) => {
-          console.error('Error creating demande d\'authorisation:', error);
-        }
-      );
+        console.log('Form value before submission:', this.form.value);
+        this.demandeAuthorisationService.createDemandeAuthorisation(this.form.value).subscribe(
+            (response) => {
+                console.log('Demande d\'authorisation created:', response);
+                this.dialogRef.close(response);
+            },
+            (error) => {
+                console.error('Error creating demande d\'authorisation:', error);
+            }
+        );
+    } else {
+        console.warn('Form is invalid');
     }
-  }
+}
+
 }

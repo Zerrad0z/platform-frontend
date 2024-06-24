@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
 interface LoginResponse {
   'access-token': string;
@@ -20,6 +20,7 @@ export class AuthService {
   roles: string[] = [];
   permissions: string[] = [];
   username: string | undefined;
+  departmentId: string | undefined;
   accessToken!: string;
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -45,7 +46,6 @@ export class AuthService {
   }
 
   loadProfile(data: LoginResponse): void {
-    console.log('Response from login:', data);
 
     this.isAuthenticated = true;
     this.accessToken = data['access-token'];
@@ -58,27 +58,23 @@ export class AuthService {
           this.username = decodedJwt.sub;
           this.roles = decodedJwt.scope ? decodedJwt.scope.split(' ') : [];
           this.permissions = decodedJwt.permissions ? decodedJwt.permissions.split(' ') : [];
-          
+          this.departmentId = decodedJwt.department_id; 
+
           localStorage.setItem('token', this.accessToken);
-          console.log('User roles:', this.roles);
-          console.log('User permissions:', this.permissions);
-          
-          // Navigate to the appropriate page based on role
-          if (this.hasRole('ADMIN')) {
+
+
+          if (this.hasRole('ADMIN') || this.hasRole('SUPERADMIN')) {
             this.router.navigate(['/admin/dashboard']);
           } else {
             this.router.navigate(['/home']);
           }
         } else {
-          console.error('Invalid token format: Missing required claims');
           this.isAuthenticated = false;
         }
       } catch (error) {
-        console.error('Invalid token format', error);
         this.isAuthenticated = false;
       }
     } else {
-      console.error('Invalid token format: Access token is not a string');
       this.isAuthenticated = false;
     }
   }
@@ -87,13 +83,16 @@ export class AuthService {
     return this.accessToken;
   }
 
+  getDepartmentId(): string | undefined {
+    return this.departmentId;
+  }
+
   hasRole(role: string): boolean {
     return this.roles.includes(role);
   }
 
   hasPermission(permission: string): boolean {
     const hasPerm = this.permissions.includes(permission);
-    console.log(`Checking permission: ${permission} - ${hasPerm}`);
     return hasPerm;
   }
 

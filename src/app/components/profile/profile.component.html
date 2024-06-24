@@ -24,3 +24,17 @@
 <div *ngIf="errorMessage">
   <p>{{ errorMessage }}</p>
 </div>
+
+<!-- API Key Section at the Bottom -->
+<div class="api-key-section-bottom">
+  <p><strong>API Key:</strong></p>
+  <div class="api-key-display">
+    <div class="api-key-rectangle">
+      <p>{{ showApiKey ? user.apiKey : '********' }}</p>
+    </div>
+    <button mat-icon-button (click)="toggleApiKeyVisibility()">
+      <mat-icon>{{ showApiKey ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+  </div>
+</div>
+

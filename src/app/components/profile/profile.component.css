@@ -1,21 +1,23 @@
-.user-profile-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
-
-.user-profile-card {
-  width: 600px;
-}
-
-.account-details {
-  display: flex;
-  justify-content: space-between;
-}
-
-.action-buttons {
-  display: flex;
-  justify-content: space-around;
+.api-key-section-bottom {
   margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.api-key-display {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.api-key-rectangle {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  min-width: 150px; /* Adjust the width as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

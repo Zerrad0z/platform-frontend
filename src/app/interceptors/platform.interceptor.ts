@@ -14,7 +14,7 @@ export class PlatformInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (!request.url.includes("/auth/login")) {
+    if (!request.url.includes("/auth/login") && !request.url.includes("/users/complete-registration")) {
       const newRequest = request.clone({
         headers: request.headers.set('Authorization', 'Bearer ' + this.authService.getToken())
       });

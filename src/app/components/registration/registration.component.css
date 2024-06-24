@@ -1,0 +1,29 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.registration-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+}
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 500px; /* Set the desired width */
+  padding: 20px; /* Adding padding */
+  background: #f9f9f9; /* Light background color */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+mat-form-field {
+  width: 100%; /* Ensuring form fields take full width */
+}

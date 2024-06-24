@@ -44,6 +44,10 @@ import { UserAuthorisationsComponent } from './components/user-authorisations/us
 import { UserDemandesComponent } from './components/user-demandes/user-demandes.component';
 import { EditEndDateDialogComponent } from './components/edit-end-date-dialog/edit-end-date-dialog.component';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
+import { RegistrationComponent } from './components/registration/registration.component';
+import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
+import { AddApiComponent } from './components/add-api/add-api.component';
+import { EditApiComponent } from './components/edit-api/edit-api.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +67,10 @@ import { EditUserComponent } from './components/edit-user/edit-user.component';
     UserAuthorisationsComponent,
     UserDemandesComponent,
     EditEndDateDialogComponent,
-    EditUserComponent
+    EditUserComponent,
+    RegistrationComponent,
+    AddApiComponent,
+    EditApiComponent
   ],
   imports: [
     BrowserModule,
@@ -91,7 +98,9 @@ import { EditUserComponent } from './components/edit-user/edit-user.component';
     MatSelectModule,
     MatTooltipModule,
     MatSnackBarModule,
-    DragDropModule // Add DragDropModule here
+    DragDropModule,
+    RecaptchaModule, 
+    RecaptchaFormsModule, 
   ],
   providers: [
     DatePipe,
