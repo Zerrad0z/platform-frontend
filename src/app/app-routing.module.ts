@@ -21,6 +21,7 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { AddApiComponent } from './components/add-api/add-api.component';
 import { EditApiComponent } from './components/edit-api/edit-api.component';
 import { roleRedirectionGuard } from './guards/role-redirection.guard';
+import { ApidocumentationComponent } from './components/apidocumentation/apidocumentation.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -36,7 +37,8 @@ const routes: Routes = [
       { path: 'support', component: ApiComponent, canActivate: [permissionGuard], data: { permission: 'BROWSE_SUPPORT' } },
       { path: 'profile', component: ProfileComponent, canActivate: [permissionGuard], data: { permission: 'MANAGE_PROFILE' } },
       { path: 'demandes', component: UserDemandesComponent, canActivate: [permissionGuard], data: { permission: 'MAKE_DEMANDES' } },
-      { path: 'subscriptions', component: UserAuthorisationsComponent, canActivate: [permissionGuard], data: { permission: 'CHECK_SUBSCRIPTIONS' } }
+      { path: 'subscriptions', component: UserAuthorisationsComponent, canActivate: [permissionGuard], data: { permission: 'CHECK_SUBSCRIPTIONS' } },
+      { path: 'documentation/:url', component: ApidocumentationComponent },
     ]
   },
   {

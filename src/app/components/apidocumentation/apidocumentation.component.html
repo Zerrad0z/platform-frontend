@@ -1,0 +1,10 @@
+<mat-toolbar color="primary">
+    <span>API Documentation</span>
+  </mat-toolbar>
+  <div class="documentation-content" *ngIf="documentationUrl">
+    <iframe id="swagger-frame" [src]="documentationUrl" width="100%" height="800px" (load)="applyCustomStyles()"></iframe>
+  </div>
+  <div *ngIf="!documentationUrl">
+    <p>No documentation URL provided.</p>
+  </div>
+  

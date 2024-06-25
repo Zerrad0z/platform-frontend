@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { ApiService } from 'src/app/services/api/api.service';
 import { Api } from 'src/app/models/api.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-api',
@@ -10,48 +12,37 @@ import { Api } from 'src/app/models/api.model';
   styleUrls: ['./edit-api.component.css']
 })
 export class EditApiComponent implements OnInit {
-  api: Api = { id: 0, name: '', description: '', version: '', documentationName: '', documentationUrl: '' };
-  apiId: number = 0;
+  displayedColumns: string[] = ['id', 'name', 'description', 'actions'];
+  dataSource = new MatTableDataSource<Api>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private apiService: ApiService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private snackBar: MatSnackBar
-  ) {}
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    this.apiId = +this.route.snapshot.paramMap.get('id')!;
-    if (this.apiId) {
-      this.apiService.getAPIById(this.apiId).subscribe(
-        response => {
-          this.api = response;
-        },
-        error => {
-          console.error('Error fetching API details', error);
-          this.snackBar.open('Error fetching API details', 'Close', {
-            duration: 3000,
-          });
-        }
-      );
-    }
+    this.fetchApis();
   }
 
-  saveApi(): void {
-    this.apiService.saveAPI(this.api).subscribe(
-      response => {
-        console.log('API updated successfully');
-        this.snackBar.open('API updated successfully', 'Close', {
-          duration: 3000,
-        });
-        this.router.navigate(['/admin/api-list']);
-      },
-      error => {
-        console.error('Error updating API', error);
-        this.snackBar.open('Error updating API', 'Close', {
-          duration: 3000,
-        });
-      }
-    );
+  fetchApis(): void {
+    this.apiService.getAllAPIs().subscribe((data: Api[]) => {
+      this.dataSource.data = data;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }, error => {
+      console.error('Error fetching APIs:', error);
+    });
+  }
+
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.dataSource.filter = filterValue;
+  }
+
+  editApi(apiId: number): void {
+    this.router.navigate(['/admin/edit-api', apiId]);
   }
 }

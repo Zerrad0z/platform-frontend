@@ -89,4 +89,11 @@ export class UserService {
       catchError(this.handleError)
     );
   }
+  checkEmailExists(email: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.baseUrl}/check-email`, { params: { email } });
+  }
+
+  getCurrentUserDepartmentId(): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/current-user/department`);
+  }
 }

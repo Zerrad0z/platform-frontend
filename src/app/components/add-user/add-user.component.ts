@@ -17,6 +17,7 @@ export class AddUserComponent implements OnInit {
   roles: Role[] = [];
   permissions: Permission[] = [];
   departmentId: number;
+  emailExistsError: boolean = false; 
 
   constructor(
     private formBuilder: FormBuilder,
@@ -25,7 +26,7 @@ export class AddUserComponent implements OnInit {
     private permissionService: PermissionService,
     private router: Router
   ) {
-    this.departmentId = 1; // Fetch this dynamically if possible
+    this.departmentId = 1;
   }
 
   ngOnInit(): void {
@@ -37,6 +38,7 @@ export class AddUserComponent implements OnInit {
 
     this.fetchRoles();
     this.fetchPermissions();
+    this.fetchCurrentUserDepartmentId();
   }
 
   fetchRoles() {
@@ -51,13 +53,33 @@ export class AddUserComponent implements OnInit {
     });
   }
 
+  fetchCurrentUserDepartmentId() {
+    this.userService.getCurrentUserDepartmentId().subscribe(departmentId => {
+      this.departmentId = departmentId;
+    });
+  }
+
+  checkEmailExists(): void {
+    const email = this.addUserForm.get('email')?.value;
+    if (email) {
+        console.log('Checking email existence for:', email);
+        this.userService.checkEmailExists(email).subscribe(exists => {
+            console.log('Email exists:', exists);
+            this.emailExistsError = exists;
+            if (exists) {
+                this.addUserForm.get('email')?.setErrors({ emailExists: true });
+            }
+        });
+    }
+}
+
   onSubmit(): void {
-    if (this.addUserForm.valid) {
+    if (this.addUserForm.valid && !this.emailExistsError) {
       const userDTO = this.addUserForm.value;
       this.userService.addUser(userDTO, this.departmentId).subscribe(
         response => {
           console.log('User added successfully', response);
-          this.router.navigate(['/users']); // Navigate to users list
+          this.router.navigate(['/admin/dashboard']); 
         },
         error => {
           console.error('Error adding user', error);

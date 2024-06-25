@@ -48,6 +48,7 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 import { AddApiComponent } from './components/add-api/add-api.component';
 import { EditApiComponent } from './components/edit-api/edit-api.component';
+import { ApidocumentationComponent } from './components/apidocumentation/apidocumentation.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { EditApiComponent } from './components/edit-api/edit-api.component';
     EditUserComponent,
     RegistrationComponent,
     AddApiComponent,
-    EditApiComponent
+    EditApiComponent,
+    ApidocumentationComponent
   ],
   imports: [
     BrowserModule,
