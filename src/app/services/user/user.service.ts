@@ -96,4 +96,22 @@ export class UserService {
   getCurrentUserDepartmentId(): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/current-user/department`);
   }
+
+  updateUsername(userId: number, newUsername: string): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${userId}/username`, { newUsername }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  changePassword(userId: number, oldPassword: string, newPassword: string): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${userId}/password`, { oldPassword, newPassword }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  closeAccount(userId: number, password: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/${userId}/close`, { password }).pipe(
+      catchError(this.handleError)
+    );
+  }
 }

@@ -32,4 +32,7 @@ export class ApiService {
       params: { keyword }
     });
   }
+  updateAPI(api: Api): Observable<Api> {
+    return this.http.put<Api>(`${this.apiUrl}/${api.id}`, api);
+  }
 }

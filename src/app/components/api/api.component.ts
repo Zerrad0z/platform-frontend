@@ -70,4 +70,7 @@ export class ApiComponent implements OnInit {
       }
     });
   }
+  openDocumentation(documentationUrl: string) {
+    window.open(documentationUrl, '_blank');
+  }
 }

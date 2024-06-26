@@ -46,10 +46,16 @@ import { EditEndDateDialogComponent } from './components/edit-end-date-dialog/ed
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
-import { AddApiComponent } from './components/add-api/add-api.component';
 import { EditApiComponent } from './components/edit-api/edit-api.component';
 import { ApidocumentationComponent } from './components/apidocumentation/apidocumentation.component';
-
+import { ChangeNameDialogComponent } from './components/change-name-dialog/change-name-dialog.component';
+import { ChangePasswordDialogComponent } from './components/change-password-dialog/change-password-dialog.component';
+import { CloseAccountDialogComponent } from './components/close-account-dialog/close-account-dialog.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
+import { MatDividerModule } from '@angular/material/divider';
+import { EditApiDialogComponent } from './components/edit-api-dialog/edit-api-dialog.component';
+import { AddApiDialogComponent } from './components/add-api-dialog/add-api-dialog.component';
+import { DeleteConfirmationDialogComponent } from './components/delete-confirmation-dialog/delete-confirmation-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,9 +76,14 @@ import { ApidocumentationComponent } from './components/apidocumentation/apidocu
     EditEndDateDialogComponent,
     EditUserComponent,
     RegistrationComponent,
-    AddApiComponent,
     EditApiComponent,
-    ApidocumentationComponent
+    ApidocumentationComponent,
+    ChangeNameDialogComponent,
+    ChangePasswordDialogComponent,
+    CloseAccountDialogComponent,
+    EditApiDialogComponent,
+    AddApiDialogComponent,
+    DeleteConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -103,6 +114,8 @@ import { ApidocumentationComponent } from './components/apidocumentation/apidocu
     DragDropModule,
     RecaptchaModule, 
     RecaptchaFormsModule, 
+    MatProgressSpinnerModule, 
+    MatDividerModule
   ],
   providers: [
     DatePipe,

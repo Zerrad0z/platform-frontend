@@ -1,23 +1,114 @@
-.api-key-section-bottom {
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
+.user-profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.api-key-display {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.profile-title {
+  color: #3f51b5;
+  margin-bottom: 20px;
 }
 
-.api-key-rectangle {
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 4px;
-  min-width: 150px; /* Adjust the width as needed */
+.user-profile-card {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
   display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-avatar {
+  margin-right: 20px;
+}
+
+.avatar-icon {
+  font-size: 64px;
+  height: 64px;
+  width: 64px;
+  color: #3f51b5;
+}
+
+.profile-info h2 {
+  margin: 0;
+  color: #333;
+}
+
+.profile-info .email {
+  color: #666;
+  margin: 5px 0;
+}
+
+.profile-info .roles {
+  color: #3f51b5;
+  font-weight: bold;
+}
+
+.section-title {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  color: #3f51b5;
+}
+
+.account-details {
+  margin-bottom: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.action-buttons button {
+  flex: 1;
+  margin: 0 10px;
+  padding: 10px 0;
+}
+
+.action-buttons button:first-child {
+  margin-left: 0;
+}
+
+.action-buttons button:last-child {
+  margin-right: 0;
+}
+
+.api-key-section {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.api-key-field {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 200px;
+}
+
+.error-container {
+  color: #f44336;
+}
+
+.error-container mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+  margin-bottom: 10px;
+}
+
+mat-divider {
+  margin: 30px 0;
 }

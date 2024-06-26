@@ -18,20 +18,19 @@ import { DemandeAuthorisationComponent } from './components/demande-authorisatio
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { UserComponent } from './components/user/user.component';
 import { RegistrationComponent } from './components/registration/registration.component';
-import { AddApiComponent } from './components/add-api/add-api.component';
 import { EditApiComponent } from './components/edit-api/edit-api.component';
-import { roleRedirectionGuard } from './guards/role-redirection.guard';
 import { ApidocumentationComponent } from './components/apidocumentation/apidocumentation.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Correct redirection for root path
+  { path: 'notAuthorized', component: NotAuthorizedComponent },
   {
     path: '',
     component: LayoutComponent,
     canActivate: [authenticationGuard],
     children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'apis', component: ApiComponent, canActivate: [permissionGuard], data: { permission: 'BROWSE_APIS' } },
       { path: 'support', component: ApiComponent, canActivate: [permissionGuard], data: { permission: 'BROWSE_SUPPORT' } },
@@ -41,24 +40,20 @@ const routes: Routes = [
       { path: 'documentation/:url', component: ApidocumentationComponent },
     ]
   },
-  {
-    path: 'admin',
-    component: DashboardComponent,
-    canActivate: [authenticationGuard, authorisationGuard],
-    data: { roles: ['ADMIN', 'SUPERADMIN'] },
-    children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'users', component: UserComponent },
-      { path: 'approuves', component: AuthorisationComponent },
-      { path: 'demandes', component: DemandeAuthorisationComponent },
-      { path: 'add-user', component: AddUserComponent },
-      { path: 'edit-user/:id', component: EditUserComponent },
-      { path: 'api-list', component: EditApiComponent, canActivate: [permissionGuard], data: { permission: 'MANAGE_APIS' } },
-      { path: 'add-api', component: AddApiComponent, canActivate: [permissionGuard], data: { permission: 'MANAGE_APIS' } }
-    ]
+  { path: 'admin',
+        canActivate: [authorisationGuard],
+        data: { roles: ['ADMIN', 'USER_A', 'SUPERADMIN'] },
+        children: [
+          { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+          { path: 'dashboard', component: DashboardComponent },
+          { path: 'users', component: UserComponent, canActivate: [permissionGuard], data: { permission: 'MANAGE_USERS' } },
+          { path: 'approuves', component: AuthorisationComponent, canActivate: [permissionGuard], data: { permission: 'MANAGE_SUBS' } },
+          { path: 'demandes', component: DemandeAuthorisationComponent, canActivate: [permissionGuard], data: { permission: 'MANAGE_DEMANDS' } },
+          { path: 'add-user', component: AddUserComponent, canActivate: [permissionGuard], data: { permission: 'ADD_USERS' } },
+          { path: 'edit-user/:id', component: EditUserComponent, canActivate: [permissionGuard], data: { permission: 'EDIT_USERS' } },
+          { path: 'api-list', component: EditApiComponent, canActivate: [permissionGuard], data: { permission: 'MANAGE_APIS' } },
+        ]      
   },
-  { path: 'notAuthorized', component: NotAuthorizedComponent },
   { path: '**', redirectTo: '/home' }
 ];
 

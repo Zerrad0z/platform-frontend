@@ -1,23 +1,23 @@
-.custom-form-field {
-  margin-bottom: 10px;
+.user-authorisations-container {
+  padding: 20px 40px;
 }
 
+.table-wrapper {
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.status-active {
+  color: green;
+}
+
+.status-inactive {
+  color: red;
+}
 mat-toolbar {
-  background-color: #ffffffdb;
-  color: rgb(0, 0, 0);
-  margin-bottom: 10px;
-  padding: 0;
-  box-shadow: 0 4px 8px rgba(1, 0, 0, 0.1);
+background-color: #ffffffdb; /* Replace with your desired color */
+color: rgb(0, 0, 0); /* Ensures the text color is white for contrast */
+margin-bottom: 10px; /* Ensure no margin at the bottom */
+padding: 0; /* Adjust padding if needed */
+box-shadow: 0 4px 8px rgba(1, 0, 0, 0.1); /* Add shadow to the toolbar */
 }
-
-
-
-.mat-table {
-  width: 80%;
-}
-
-.mat-header-cell, .mat-cell {
-  padding: 8px;
-  text-align: center; /* Center the text in header and data cells */
-}
-

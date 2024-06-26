@@ -20,7 +20,7 @@
         </mat-list-item>
       </mat-expansion-panel>
 
-      <mat-expansion-panel *ngIf="authService.hasPermission('MANAGE_DEMANDE')">
+      <mat-expansion-panel>
         <mat-expansion-panel-header class="panel-header">
           <mat-panel-title>
             <mat-icon>api</mat-icon>
@@ -43,13 +43,9 @@
           <mat-icon class="icons" matListIcon>edit</mat-icon>
           <a matLine routerLink="/admin/api-list" routerLinkActive="active" class="no-underline">Edit APIs</a>
         </mat-list-item>
-        <mat-list-item *ngIf="authService.hasRole('SUPERADMIN')">
-          <mat-icon class="icons" matListIcon>add_circle</mat-icon>
-          <a matLine routerLink="/admin/add-api" routerLinkActive="active" class="no-underline">Add New API</a>
-        </mat-list-item>
       </mat-expansion-panel>
 
-      <mat-expansion-panel *ngIf="authService.hasPermission('MANAGE_SUBS')">
+      <mat-expansion-panel>
         <mat-expansion-panel-header class="panel-header">
           <mat-panel-title>
             <mat-icon>settings</mat-icon>
@@ -64,18 +60,8 @@
       </mat-expansion-panel>
     </mat-nav-list>
 
-    <div class="logout-container">
-      <mat-divider></mat-divider>
-      <mat-list-item (click)="logout()" class="logout-button">
-        <mat-icon class="icons" matListIcon>exit_to_app</mat-icon>
-        <span matLine>Logout</span>
-      </mat-list-item>
-    </div>
   </mat-sidenav>
-
-  <mat-sidenav-content class="sidenav-content">
-    <div class="content">
-      <router-outlet></router-outlet> <!-- This will load the child routes -->
-    </div>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

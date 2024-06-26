@@ -15,15 +15,5 @@ export class LayoutComponent {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
-
-  debugClick(): void {
-    console.log('Button clicked');
-    this.router.navigate(['/apis']).then(success => {
-      if (success) {
-        console.log('Navigation is successful');
-      } else {
-        console.log('Navigation has failed');
-      }
-    });
-  }
+  
 }

@@ -70,21 +70,17 @@ export class AuthService {
           localStorage.setItem('token', this.accessToken);
 
           // Redirect based on roles
-          if (this.hasRole('ADMIN') || this.hasRole('SUPERADMIN')) {
-            this.router.navigate(['/admin/dashboard']);
-          } else {
-            this.router.navigate(['/home']);
-          }
-        } else {
-          this.isAuthenticated = false;
-        }
-      } catch (error) {
+          this.router.navigate(['/layout']);
+      } else {
         this.isAuthenticated = false;
       }
-    } else {
+    } catch (error) {
       this.isAuthenticated = false;
     }
+  } else {
+    this.isAuthenticated = false;
   }
+}
 
   getToken(): string {
     return this.accessToken;

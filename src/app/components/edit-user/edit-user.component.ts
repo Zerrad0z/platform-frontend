@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { UserService } from 'src/app/services/user/user.service';
 import { RoleService } from 'src/app/services/role/role.service';
 import { PermissionService } from 'src/app/services/permission/permission.service';
@@ -25,6 +24,7 @@ export class EditUserComponent implements OnInit {
   };
   allRoles: Role[] = [];
   allPermissions: Permission[] = [];
+  selectedRole: Role | null = null;
   departmentId: number = 1; // Assuming you have a way to get the department ID of the current user
 
   constructor(
@@ -48,7 +48,10 @@ export class EditUserComponent implements OnInit {
     this.userService.getUserById(userId, this.departmentId).subscribe(
       (user: User) => {
         this.user = user;
-        this.filterAvailableRolesAndPermissions();
+        if (user.roles.length > 0) {
+          this.selectedRole = user.roles[0];
+          this.updatePermissionChecks();
+        }
       },
       (error) => {
         console.error('Error fetching user:', error);
@@ -60,7 +63,6 @@ export class EditUserComponent implements OnInit {
     this.roleService.getAllRoles().subscribe(
       (roles: Role[]) => {
         this.allRoles = roles;
-        this.filterAvailableRolesAndPermissions();
       },
       (error) => {
         console.error('Error fetching roles:', error);
@@ -71,8 +73,8 @@ export class EditUserComponent implements OnInit {
   fetchAllPermissions(): void {
     this.permissionService.getAllPermissions().subscribe(
       (permissions: Permission[]) => {
-        this.allPermissions = permissions;
-        this.filterAvailableRolesAndPermissions();
+        this.allPermissions = permissions.map(p => ({...p, checked: false}));
+        this.updatePermissionChecks();
       },
       (error) => {
         console.error('Error fetching permissions:', error);
@@ -80,28 +82,27 @@ export class EditUserComponent implements OnInit {
     );
   }
 
-  filterAvailableRolesAndPermissions(): void {
-    this.allRoles = this.allRoles.filter(role => !this.user.roles.some(userRole => userRole.id === role.id));
-    this.allPermissions = this.allPermissions.filter(permission => !this.user.permissions.some(userPermission => userPermission.id === permission.id));
-  }
-
-  dropRole(event: CdkDragDrop<Role[]>): void {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+  updatePermissionChecks(): void {
+    if (this.selectedRole && this.allPermissions.length > 0) {
+      const rolePermissions = this.selectedRole.permissions || [];
+      this.allPermissions.forEach(permission => {
+        permission.checked = rolePermissions.some((p: Permission) => p.id === permission.id) || 
+                             this.user.permissions.some(p => p.id === permission.id);
+      });
     }
   }
 
-  dropPermission(event: CdkDragDrop<Permission[]>): void {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-    }
+  onRoleChange(): void {
+    this.updatePermissionChecks();
+  }
+
+  togglePermission(permission: Permission): void {
+    permission.checked = !permission.checked;
   }
 
   saveChanges(): void {
+    this.user.roles = [this.selectedRole!];
+    this.user.permissions = this.allPermissions.filter(p => p.checked);
     this.userService.updateUser(this.user, this.departmentId).subscribe(
       () => {
         console.log('User updated successfully');

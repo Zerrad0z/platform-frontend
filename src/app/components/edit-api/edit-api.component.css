@@ -1,0 +1,13 @@
+.spacer {
+    flex: 1 1 auto;
+  }
+  
+  .mat-column-actions {
+    width: 120px; /* Adjust as needed */
+    text-align: center;
+  }
+  
+  .mat-column-actions button {
+    margin: 0 4px;
+  }
+  

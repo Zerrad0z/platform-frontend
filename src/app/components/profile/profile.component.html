@@ -1,40 +1,72 @@
 <div class="user-profile-container" *ngIf="user">
-  <h1>User profile</h1>
+  <h1 class="profile-title">User Profile</h1>
   <mat-card class="user-profile-card">
     <mat-card-content>
-      <h2>Account details</h2>
-      <div class="account-details">
-        <div>
-          <p><strong>Username:</strong> {{ user.username }}</p>
-          <p><strong>Email:</strong> {{ user.email }}</p>
-          <p><strong>Roles:</strong> {{ getRoleNames(user) }}</p>
+      <div class="profile-header">
+        <div class="profile-avatar">
+          <mat-icon class="avatar-icon">account_circle</mat-icon>
+        </div>
+        <div class="profile-info">
+          <p class="roles">{{ getRoleNames(user) }}</p>
         </div>
       </div>
+
+      <mat-divider></mat-divider>
+
+      <h3 class="section-title">Account Details</h3>
+      <div class="account-details">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <input matInput [value]="user.username" readonly>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput [value]="user.email" readonly>
+        </mat-form-field>
+      </div>
+
+      <h3 class="section-title"></h3>
       <div class="action-buttons">
-        <button mat-raised-button color="primary">Change name</button>
-        <button mat-raised-button color="accent">Change password</button>
-        <button mat-raised-button color="warn">Close account</button>
+        <button mat-raised-button color="primary" (click)="openChangeNameDialog()">
+          <mat-icon>edit</mat-icon>
+          Change Name
+        </button>
+        <button mat-raised-button color="accent" (click)="openChangePasswordDialog()">
+          <mat-icon>lock</mat-icon>
+          Change Password
+        </button>
+        <button mat-raised-button color="warn" (click)="openCloseAccountDialog()">
+          <mat-icon>delete_forever</mat-icon>
+          Close Account
+        </button>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <h3 class="section-title">API Key</h3>
+      <div class="api-key-section">
+        <mat-form-field appearance="outline" class="api-key-field">
+          <mat-label>Your API Key</mat-label>
+          <input matInput [type]="showApiKey ? 'text' : 'password'" [value]="user.apiKey" readonly>
+          <button mat-icon-button matSuffix (click)="toggleApiKeyVisibility()" [attr.aria-label]="'Hide API key'" [attr.aria-pressed]="showApiKey">
+            <mat-icon>{{showApiKey ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+        <button mat-stroked-button color="primary" (click)="copyApiKey()">
+          <mat-icon>content_copy</mat-icon>
+          Copy API Key
+        </button>
       </div>
     </mat-card-content>
   </mat-card>
 </div>
-<div *ngIf="!user && !errorMessage">
+
+<div *ngIf="!user && !errorMessage" class="loading-container">
+  <mat-spinner diameter="50"></mat-spinner>
   <p>Loading user profile...</p>
 </div>
-<div *ngIf="errorMessage">
+
+<div *ngIf="errorMessage" class="error-container">
+  <mat-icon color="warn">error</mat-icon>
   <p>{{ errorMessage }}</p>
 </div>
-
-<!-- API Key Section at the Bottom -->
-<div class="api-key-section-bottom">
-  <p><strong>API Key:</strong></p>
-  <div class="api-key-display">
-    <div class="api-key-rectangle">
-      <p>{{ showApiKey ? user.apiKey : '********' }}</p>
-    </div>
-    <button mat-icon-button (click)="toggleApiKeyVisibility()">
-      <mat-icon>{{ showApiKey ? 'visibility_off' : 'visibility' }}</mat-icon>
-    </button>
-  </div>
-</div>
-
