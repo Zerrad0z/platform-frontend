@@ -56,6 +56,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { EditApiDialogComponent } from './components/edit-api-dialog/edit-api-dialog.component';
 import { AddApiDialogComponent } from './components/add-api-dialog/add-api-dialog.component';
 import { DeleteConfirmationDialogComponent } from './components/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { DeleteConfirmationDialComponent } from './components/delete-confirmation-dial/delete-confirmation-dial.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -83,7 +84,8 @@ import { DeleteConfirmationDialogComponent } from './components/delete-confirmat
     CloseAccountDialogComponent,
     EditApiDialogComponent,
     AddApiDialogComponent,
-    DeleteConfirmationDialogComponent
+    DeleteConfirmationDialogComponent,
+    DeleteConfirmationDialComponent
   ],
   imports: [
     BrowserModule,

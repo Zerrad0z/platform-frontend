@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
+import { User } from 'src/app/models/user.model';
 
 interface LoginResponse {
   'access-token': string;
@@ -19,7 +20,7 @@ export class AuthService {
   roles: string[] = [];
   permissions: string[] = [];
   username: string | undefined;
-  departmentId: string | undefined;
+  departmentId: number | undefined;
   accessToken!: string;
 
   constructor(private http: HttpClient, private router: Router) {
@@ -62,31 +63,35 @@ export class AuthService {
     if (typeof this.accessToken === 'string') {
       try {
         const decodedJwt: any = jwtDecode(this.accessToken);
+        console.log('Decoded JWT:', decodedJwt);
         if (decodedJwt && decodedJwt.sub) {
           this.username = decodedJwt.sub;
           this.roles = decodedJwt.scope ? decodedJwt.scope.split(' ') : [];
           this.permissions = decodedJwt.permissions ? decodedJwt.permissions.split(' ') : [];
-          this.departmentId = decodedJwt.department_id;
+          this.departmentId = parseInt(decodedJwt.department_id, 10);
+          console.log('Department ID set to:', this.departmentId);
           localStorage.setItem('token', this.accessToken);
 
           // Redirect based on roles
           this.router.navigate(['/layout']);
-      } else {
+        } else {
+          this.isAuthenticated = false;
+        }
+      } catch (error) {
+        console.error('Error decoding JWT:', error);
         this.isAuthenticated = false;
       }
-    } catch (error) {
+    } else {
       this.isAuthenticated = false;
     }
-  } else {
-    this.isAuthenticated = false;
   }
-}
 
   getToken(): string {
     return this.accessToken;
   }
 
-  getDepartmentId(): string | undefined {
+  getDepartmentId(): number | undefined {
+    console.log('Retrieving Department ID:', this.departmentId);
     return this.departmentId;
   }
 
@@ -114,5 +119,15 @@ export class AuthService {
     this.accessToken = '';
     localStorage.removeItem('token');
     this.router.navigate(['/login']); // Redirect to login page on logout
+  }
+
+  canManageUser(user: User): boolean {
+    const currentUserRoles = this.getRoles();
+    if (currentUserRoles.includes('SUPERADMIN')) {
+      return user.roles.some(role => role.name === 'ADMIN');
+    } else if (currentUserRoles.includes('ADMIN')) {
+      return user.roles.some(role => role.name === 'USER_B' || role.name === 'USER_A');
+    }
+    return false;
   }
 }

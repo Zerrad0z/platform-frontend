@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DemandeAuthorisationService } from 'src/app/services/demandeAuthorisation/demande-authorisation.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { DemandeAuthorisation } from 'src/app/models/demandeAuthorisation.model';
+import { endDateAfterStartDateValidator } from 'src/app/validators/customValidator';
 
 @Component({
   selector: 'app-demande',
@@ -27,14 +28,12 @@ export class DemandeComponent implements OnInit {
       endDate: ['', Validators.required],
       apiId: [data.apiId, Validators.required],
       userId: ['', Validators.required]
-    });
+    }, { validators: endDateAfterStartDateValidator() });
   }
 
   ngOnInit(): void {
-    // Fetch the current user ID and their demandes
     this.userService.getCurrentUser().subscribe(
       (user) => {
-        console.log('Fetched user:', user); // Log user to verify
         this.form.patchValue({ userId: user.id });
         this.fetchUserDemandes(user.id);
       },
@@ -57,19 +56,40 @@ export class DemandeComponent implements OnInit {
 
   onSubmit(): void {
     if (this.form.valid) {
-        console.log('Form value before submission:', this.form.value);
-        this.demandeAuthorisationService.createDemandeAuthorisation(this.form.value).subscribe(
-            (response) => {
-                console.log('Demande d\'authorisation created:', response);
-                this.dialogRef.close(response);
-            },
-            (error) => {
-                console.error('Error creating demande d\'authorisation:', error);
-            }
-        );
-    } else {
-        console.warn('Form is invalid');
+      this.demandeAuthorisationService.createDemandeAuthorisation(this.form.value).subscribe(
+        (response) => {
+          this.dialogRef.close(response);
+        },
+        (error) => {
+          console.error('Error creating demande d\'authorisation:', error);
+        }
+      );
     }
-}
+  }
 
+  getDescriptionErrorMessage() {
+    const descriptionControl = this.form.get('description');
+    if (descriptionControl && descriptionControl.hasError('required')) {
+      return 'Description is required';
+    }
+    return '';
+  }
+
+  getStartDateErrorMessage() {
+    const startDateControl = this.form.get('startDate');
+    if (startDateControl && startDateControl.hasError('required')) {
+      return 'Start date is required';
+    }
+    return '';
+  }
+
+  getEndDateErrorMessage() {
+    const endDateControl = this.form.get('endDate');
+    if (endDateControl && endDateControl.hasError('required')) {
+      return 'End date is required';
+    } else if (this.form.errors && this.form.errors['endDateNotAfterStartDate']) {
+      return 'End date must be after start date';
+    }
+    return '';
+  }
 }

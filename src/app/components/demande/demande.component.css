@@ -1,1 +1,9 @@
-
+.authorization-form .full-width {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  mat-dialog-actions {
+    padding: 8px 24px;
+  }
+  

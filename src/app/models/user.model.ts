@@ -9,6 +9,7 @@ export interface User {
   roles: Role[]; // 
   permissions: Permission[];
   apiKey: string;
+  departmentId?: number;
 }
 
 

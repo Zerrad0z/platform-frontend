@@ -6,17 +6,21 @@
         <mat-expansion-panel-header class="panel-header">
           <mat-panel-title>
             <mat-icon>people</mat-icon>
-            <span>Manage Users</span>
+            <span>{{ authService.hasRole('SUPERADMIN') ? 'Manage Admins' : 'Manage Users' }}</span>
           </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-divider></mat-divider>
         <mat-list-item>
           <mat-icon class="icons" matListIcon>person</mat-icon>
-          <a matLine routerLink="/admin/users" routerLinkActive="active" class="no-underline">Users</a>
+          <a matLine routerLink="/admin/users" routerLinkActive="active" class="no-underline">
+            {{ authService.hasRole('SUPERADMIN') ? 'Admins' : 'Users' }}
+          </a>
         </mat-list-item>
         <mat-list-item *ngIf="authService.hasPermission('ADD_USERS')">
           <mat-icon class="icons" matListIcon>person_add</mat-icon>
-          <a matLine routerLink="/admin/add-user" routerLinkActive="active" class="no-underline">Add User</a>
+          <a matLine routerLink="/admin/add-user" routerLinkActive="active" class="no-underline">
+            {{ authService.hasRole('SUPERADMIN') ? 'Add Admin' : 'Add User' }}
+          </a>
         </mat-list-item>
       </mat-expansion-panel>
 
@@ -26,7 +30,6 @@
             <mat-icon>api</mat-icon>
             <span (click)="markAsRead()">Manage APIs</span>
             <span *ngIf="notificationCount > 0" class="notification-dot">{{ notificationCount }}</span>
-
           </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-divider></mat-divider>
@@ -59,7 +62,6 @@
         </mat-list-item>
       </mat-expansion-panel>
     </mat-nav-list>
-
   </mat-sidenav>
   <mat-sidenav-content>
     <router-outlet></router-outlet>

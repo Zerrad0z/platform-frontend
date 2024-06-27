@@ -1,23 +1,28 @@
-<h1 mat-dialog-title>Demande d'authorisation</h1>
+<h1 mat-dialog-title>Demande d'autorisation</h1>
 <div mat-dialog-content>
-  <form [formGroup]="form">
-    <mat-form-field appearance="fill">
+  <form [formGroup]="form" class="authorization-form">
+    <mat-form-field appearance="fill" class="full-width">
       <mat-label>Description</mat-label>
-      <input matInput formControlName="description">
+      <input matInput formControlName="description" placeholder="Enter description">
+      <mat-error *ngIf="form.get('description')?.invalid">{{ getDescriptionErrorMessage() }}</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" class="full-width">
       <mat-label>Start Date</mat-label>
-      <input matInput [matDatepicker]="startDate" formControlName="startDate">
+      <input matInput [matDatepicker]="startDate" formControlName="startDate" placeholder="Choose a start date">
       <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
       <mat-datepicker #startDate></mat-datepicker>
+      <mat-error *ngIf="form.get('startDate')?.invalid">{{ getStartDateErrorMessage() }}</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" class="full-width">
       <mat-label>End Date</mat-label>
-      <input matInput [matDatepicker]="endDate" formControlName="endDate">
+      <input matInput [matDatepicker]="endDate" formControlName="endDate" placeholder="Choose an end date">
       <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
       <mat-datepicker #endDate></mat-datepicker>
+      <mat-error *ngIf="form.get('endDate')?.invalid || form.errors?.['endDateNotAfterStartDate']">
+        {{ getEndDateErrorMessage() }}
+      </mat-error>
     </mat-form-field>
 
     <!-- Hidden API ID field -->
@@ -26,7 +31,7 @@
     <input formControlName="userId" type="hidden">
   </form>
 </div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onSubmit()">Submit</button>
+<div mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">Submit</button>
   <button mat-button mat-dialog-close>Cancel</button>
 </div>

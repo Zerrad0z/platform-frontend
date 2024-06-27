@@ -41,10 +41,8 @@ export class RegistrationComponent implements OnInit {
   onSubmit(): void {
     if (this.registrationForm.valid) {
       const { username, password } = this.registrationForm.value;
-      console.log("Submitting registration form with username:", username);
       this.userService.completeRegistration(this.token, username, password).subscribe(
         response => {
-          console.log('User registration completed successfully', response);
           this.router.navigate(['/login']); // Navigate to login page
         },
         error => {

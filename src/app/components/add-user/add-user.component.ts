@@ -16,7 +16,7 @@ export class AddUserComponent implements OnInit {
   addUserForm!: FormGroup;
   roles: Role[] = [];
   permissions: Permission[] = [];
-  departmentId: number;
+  departmentId: number | null = null;  // Changed to number | null
   emailExistsError: boolean = false; 
 
   constructor(
@@ -25,9 +25,7 @@ export class AddUserComponent implements OnInit {
     private roleService: RoleService,
     private permissionService: PermissionService,
     private router: Router
-  ) {
-    this.departmentId = 1;
-  }
+  ) {}
 
   ngOnInit(): void {
     this.addUserForm = this.formBuilder.group({
@@ -54,38 +52,52 @@ export class AddUserComponent implements OnInit {
   }
 
   fetchCurrentUserDepartmentId() {
-    this.userService.getCurrentUserDepartmentId().subscribe(departmentId => {
-      this.departmentId = departmentId;
-    });
+    this.userService.getCurrentUserDepartmentId().subscribe(
+      departmentId => {
+        this.departmentId = departmentId;
+        if (departmentId === null) {
+          console.log('User is likely a SUPERADMIN');
+          // Handle SUPERADMIN case if needed
+        }
+      },
+      error => {
+        console.error('Error fetching department ID:', error);
+      }
+    );
   }
 
   checkEmailExists(): void {
     const email = this.addUserForm.get('email')?.value;
     if (email) {
-        console.log('Checking email existence for:', email);
-        this.userService.checkEmailExists(email).subscribe(exists => {
-            console.log('Email exists:', exists);
-            this.emailExistsError = exists;
-            if (exists) {
-                this.addUserForm.get('email')?.setErrors({ emailExists: true });
-            }
-        });
+      console.log('Checking email existence for:', email);
+      this.userService.checkEmailExists(email).subscribe(exists => {
+        console.log('Email exists:', exists);
+        this.emailExistsError = exists;
+        if (exists) {
+          this.addUserForm.get('email')?.setErrors({ emailExists: true });
+        }
+      });
     }
-}
+  }
 
   onSubmit(): void {
     if (this.addUserForm.valid && !this.emailExistsError) {
       const userDTO = this.addUserForm.value;
-      this.userService.addUser(userDTO, this.departmentId).subscribe(
-        response => {
-          console.log('User added successfully', response);
-          this.router.navigate(['/admin/dashboard']); 
-        },
-        error => {
-          console.error('Error adding user', error);
-          // Show error message to user
-        }
-      );
+      if (this.departmentId !== null) {
+        this.userService.addUser(userDTO, this.departmentId).subscribe(
+          response => {
+            console.log('User added successfully', response);
+            this.router.navigate(['/admin/dashboard']); 
+          },
+          error => {
+            console.error('Error adding user', error);
+            // Show error message to user
+          }
+        );
+      } else {
+        console.error('Department ID is null. Cannot add user.');
+        // Handle the case where departmentId is null (e.g., show an error message)
+      }
     } else {
       this.addUserForm.markAllAsTouched();
     }

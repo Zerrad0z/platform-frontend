@@ -7,6 +7,6 @@ export interface DemandeAuthorisation {
   endDate: Date;
   approved: boolean;
   status: string; // "PENDING", "APPROVED", "REJECTED"
-  username?: string; // The name of the user (optional)
-  apiName?: string; // The name of the API (optional)
+  username?: string; 
+  apiName?: string; 
 }

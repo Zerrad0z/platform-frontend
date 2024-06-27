@@ -5,7 +5,9 @@ import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/models/user.model';
-import { Role } from 'src/app/models/role.model';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteConfirmationDialComponent } from '../delete-confirmation-dial/delete-confirmation-dial.component';
 
 @Component({
   selector: 'app-user',
@@ -14,50 +16,39 @@ import { Role } from 'src/app/models/role.model';
 })
 export class UserComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'edit'];
+  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'actions'];
   dataSource = new MatTableDataSource<User>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private authService: AuthService,
+    public dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
-    this.fetchUsers();
+    this.fetchManageableUsers();
   }
 
-  fetchUsers(): void {
-    const departmentId = 1; // Assuming you have a way to get the department ID of the current user
-    this.userService.getAllUsers(departmentId).subscribe(
+  fetchManageableUsers(): void {
+    this.userService.getManageableUsers().subscribe(
       (users: User[]) => {
+        console.log('Fetched manageable users:', users);
         this.dataSource.data = users;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        this.fetchRolesForUsers(users);
       },
       (error) => {
-        console.error('Error fetching users:', error);
+        console.error('Error fetching manageable users:', error);
       }
     );
   }
 
-  fetchRolesForUsers(users: User[]): void {
-    const departmentId = 1; // Assuming you have a way to get the department ID of the current user
-    users.forEach(user => {
-      this.userService.getUserRoles(user.id, departmentId).subscribe(
-        (roles: Role[]) => {
-          user.roles = roles;
-          this.dataSource.data = [...this.dataSource.data]; // Trigger change detection
-        },
-        (error) => {
-          console.error(`Error fetching roles for user ${user.id}:`, error);
-        }
-      );
-    });
-  }
-
   getRoleNames(user: User): string {
-    return user.roles ? user.roles.map(role => role.name).join(', ') : 'Loading...';
+    return user.roles ? user.roles.map(role => role.name).join(', ') : 'N/A';
   }
 
   applyFilter(event: Event): void {
@@ -67,5 +58,30 @@ export class UserComponent implements OnInit {
 
   editUser(user: User): void {
     this.router.navigate(['/admin/edit-user', user.id]);
+  }
+
+  confirmDeleteUser(user: User): void {
+    const dialogRef = this.dialog.open(DeleteConfirmationDialComponent, {
+      width: '250px',
+      data: { userName: user.username }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteUser(user.id);
+      }
+    });
+  }
+
+  deleteUser(userId: number): void {
+    this.userService.deleteUser(userId).subscribe(
+      () => {
+        console.log('User deleted successfully');
+        this.fetchManageableUsers(); // Refresh the table data
+      },
+      (error) => {
+        console.error('Error deleting user:', error);
+      }
+    );
   }
 }
