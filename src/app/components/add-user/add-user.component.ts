@@ -31,11 +31,9 @@ export class AddUserComponent implements OnInit {
     this.addUserForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       roles: [[], Validators.required],
-      permissions: [[], Validators.required]
     });
 
     this.fetchRoles();
-    this.fetchPermissions();
     this.fetchCurrentUserDepartmentId();
   }
 
@@ -45,11 +43,6 @@ export class AddUserComponent implements OnInit {
     });
   }
 
-  fetchPermissions() {
-    this.permissionService.getAllPermissions().subscribe(permissions => {
-      this.permissions = permissions;
-    });
-  }
 
   fetchCurrentUserDepartmentId() {
     this.userService.getCurrentUserDepartmentId().subscribe(
@@ -79,7 +72,6 @@ export class AddUserComponent implements OnInit {
       });
     }
   }
-
   onSubmit(): void {
     if (this.addUserForm.valid && !this.emailExistsError) {
       const userDTO = this.addUserForm.value;
@@ -102,4 +94,4 @@ export class AddUserComponent implements OnInit {
       this.addUserForm.markAllAsTouched();
     }
   }
-}
+  }

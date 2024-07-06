@@ -14,7 +14,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  addUser(user: { email: string, roles: any[], permissions: any[] }, departmentId: number): Observable<User> {
+  addUser(user: { email: string, roles: any[] }, departmentId: number): Observable<User> {
     const headers = { 'Department-Id': departmentId.toString() };
     return this.http.post<User>(`${this.baseUrl}/add`, user, { headers }).pipe(
       catchError(this.handleError)
