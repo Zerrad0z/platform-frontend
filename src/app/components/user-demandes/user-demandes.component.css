@@ -1,23 +1,75 @@
-.user-demandes-container {
-  padding: 20px 40px;
+.demandes-container {
+  padding: 20px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
 }
 
-.table-wrapper {
+.page-header {
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.content-wrapper {
+  max-width: 1200px;
   margin: 0 auto;
-  max-width: 800px;
 }
 
-.approved {
-  color: green;
+.error-message, .no-demandes-message {
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: white;
+  border-radius: 4px;
+  text-align: center;
 }
 
-.not-approved {
-  color: red;
+.error-message {
+  color: #f44336;
 }
-mat-toolbar {
-  background-color: #ffffffdb; /* Replace with your desired color */
-  color: rgb(0, 0, 0); /* Ensures the text color is white for contrast */
-  margin-bottom: 10px; /* Ensure no margin at the bottom */
-  padding: 0; /* Adjust padding if needed */
-  box-shadow: 0 4px 8px rgba(1, 0, 0, 0.1); /* Add shadow to the toolbar */
+
+.table-container {
+  background-color: white;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-header-cell {
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.mat-cell {
+  padding: 16px;
+}
+
+.mat-row:nth-child(even) {
+  background-color: #f8f8f8;
+}
+
+.mat-row:hover {
+  background-color: #e8eaf6;
+}
+
+.mat-paginator {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.status-chip {
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-chip.pending {
+  background-color: #ffd740;
+  color: #000;
+}
+
+.status-chip.approved {
+  background-color: #4caf50;
+  color: #fff;
 }

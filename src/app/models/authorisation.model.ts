@@ -1,9 +1,9 @@
 export interface Authorisation {
   authorisationId: number;
   userId: number;
-  username: string; // Add this property
+  username: string;
   apiId: number;
-  apiName: string; // Add this property
+  apiName: string; 
   startDate: Date;
   endDate: Date;
   status: boolean;

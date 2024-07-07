@@ -1,32 +1,55 @@
-<mat-toolbar color="primary">
-  <span>Mes authorisations</span>
-</mat-toolbar>
-<div class="user-authorisations-container">
-  <div class="table-wrapper">
-    <table mat-table [dataSource]="authorisations" class="mat-elevation-z8">
-      <ng-container matColumnDef="apiId">
-        <th mat-header-cell *matHeaderCellDef> API  </th>
-        <td mat-cell *matCellDef="let element"> {{element.apiName}} </td>
-      </ng-container>
-      <ng-container matColumnDef="startDate">
-        <th mat-header-cell *matHeaderCellDef> Start Date </th>
-        <td mat-cell *matCellDef="let element"> {{element.startDate | date}} </td>
-      </ng-container>
-      <ng-container matColumnDef="endDate">
-        <th mat-header-cell *matHeaderCellDef> End Date </th>
-        <td mat-cell *matCellDef="let element"> {{element.endDate | date}} </td>
-      </ng-container>
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef> Status </th>
-        <td mat-cell *matCellDef="let element"> 
-          <span [ngClass]="{'status-active': element.status, 'status-inactive': !element.status}">
-            {{element.status ? 'Active' : 'Inactive'}}
-          </span> 
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="['apiId', 'startDate', 'endDate', 'status']"></tr>
-      <tr mat-row *matRowDef="let row; columns: ['apiId', 'startDate', 'endDate', 'status'];"></tr>
-    </table>
+<div class="authorisations-container">
+  <div class="fixed-header">
+    <mat-toolbar color="primary" class="page-header">
+      <span>Mes autorisations</span>
+    </mat-toolbar>
+
+    <div class="search-container">
+      <mat-form-field class="search-field" appearance="outline">
+        <mat-label>Search Authorisations</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Enter API name or status" #input>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="scrollable-content">
+    <div class="table-container mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="apiId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> API </th>
+          <td mat-cell *matCellDef="let element"> {{element.apiName}} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="startDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.startDate | date}} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="endDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> End Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.endDate | date}} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+          <td mat-cell *matCellDef="let element"> 
+            <span class="status-chip" [ngClass]="{'active': element.status, 'inactive': !element.status}">
+              {{element.status ? 'Active' : 'Inactive'}}
+            </span> 
+          </td>
+        </ng-container>
+        
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of authorisations"></mat-paginator>
+    </div>
   </div>
 </div>
-

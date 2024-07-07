@@ -6,7 +6,6 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { Api } from 'src/app/models/api.model';
 import { MatDialog } from '@angular/material/dialog';
 import { DemandeAuthorisationService } from 'src/app/services/demandeAuthorisation/demande-authorisation.service';
-import { DemandeAuthorisation } from 'src/app/models/demandeAuthorisation.model';
 import { DemandeComponent } from '../demande/demande.component';
 
 @Component({
@@ -15,7 +14,7 @@ import { DemandeComponent } from '../demande/demande.component';
   styleUrls: ['./api.component.css']
 })
 export class ApiComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'description', 'actions'];
+  displayedColumns: string[] = ['name', 'description', 'service', 'actions'];
   dataSource = new MatTableDataSource<Api>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -29,17 +28,20 @@ export class ApiComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('ApiComponent initialized');
-    this.fetchApis();
+    this.fetchUnauthorizedApis();
   }
   
-  fetchApis(): void {
-    this.apiService.getAllAPIs().subscribe((data: Api[]) => {
-      this.dataSource.data = data;
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    }, error => {
-      console.error('Error fetching APIs:', error);
-    });
+  fetchUnauthorizedApis(): void {
+    this.apiService.getAllUnauthorizedAPIs().subscribe(
+      (data: Api[]) => {
+        this.dataSource.data = data;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error => {
+        console.error('Error fetching unauthorized APIs:', error);
+      }
+    );
   }
 
   applyFilter(event: Event): void {
@@ -58,9 +60,8 @@ export class ApiComponent implements OnInit {
         this.demandeAuthorisationService.createDemandeAuthorisation(result).subscribe(
           (response) => {
             console.log('Demande d\'authorisation created:', response);
-            // Optionally, refresh the data or show a success message
             alert('Demande envoyée');
-            this.fetchApis();
+            this.fetchUnauthorizedApis();
           },
           (error) => {
             console.error('Error creating demande d\'authorisation:', error);
@@ -70,6 +71,7 @@ export class ApiComponent implements OnInit {
       }
     });
   }
+
   openDocumentation(documentationUrl: string) {
     window.open(documentationUrl, '_blank');
   }

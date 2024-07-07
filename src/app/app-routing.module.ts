@@ -7,7 +7,6 @@ import { ApiComponent } from './components/api/api.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { UserDemandesComponent } from './components/user-demandes/user-demandes.component';
 import { UserAuthorisationsComponent } from './components/user-authorisations/user-authorisations.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NotAuthorizedComponent } from './components/not-authorized/not-authorized.component';
 import { authenticationGuard } from './guards/authentication.guard';
 import { authorisationGuard } from './guards/authorisation.guard';
@@ -38,21 +37,21 @@ const routes: Routes = [
       { path: 'demandes', component: UserDemandesComponent, canActivate: [permissionGuard], data: { permission: 'MAKE_DEMANDES' } },
       { path: 'subscriptions', component: UserAuthorisationsComponent, canActivate: [permissionGuard], data: { permission: 'CHECK_SUBSCRIPTIONS' } },
       { path: 'documentation/:url', component: ApidocumentationComponent },
-    ]
-  },
-  { path: 'admin',
+      {
+        path: 'admin',
         canActivate: [authorisationGuard],
         data: { roles: ['ADMIN', 'USER_A', 'SUPERADMIN'] },
         children: [
           { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-          { path: 'dashboard', component: DashboardComponent },
           { path: 'users', component: UserComponent, canActivate: [permissionGuard], data: { permission: 'MANAGE_USERS' } },
           { path: 'approuves', component: AuthorisationComponent, canActivate: [permissionGuard], data: { permission: 'MANAGE_SUBS' } },
           { path: 'demandes', component: DemandeAuthorisationComponent, canActivate: [permissionGuard], data: { permission: 'MANAGE_DEMANDS' } },
           { path: 'add-user', component: AddUserComponent, canActivate: [permissionGuard], data: { permission: 'ADD_USERS' } },
           { path: 'edit-user/:id', component: EditUserComponent, canActivate: [permissionGuard], data: { permission: 'EDIT_USERS' } },
           { path: 'api-list', component: EditApiComponent, canActivate: [permissionGuard], data: { permission: 'MANAGE_APIS' } },
-        ]      
+        ]
+      },
+    ]
   },
   { path: '**', redirectTo: '/home' }
 ];

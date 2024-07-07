@@ -1,23 +1,63 @@
-.user-authorisations-container {
-  padding: 20px 40px;
+.api-container {
+  padding: 20px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
 }
 
-.table-wrapper {
-  margin: 0 auto;
-  max-width: 800px;
+.page-header {
+  margin-bottom: 20px;
+  border-radius: 4px;
 }
 
-.status-active {
-  color: green;
+.search-container {
+  margin-bottom: 20px;
 }
 
-.status-inactive {
-  color: red;
+.search-field {
+  width: 100%;
+  max-width: 500px;
 }
-mat-toolbar {
-background-color: #ffffffdb; /* Replace with your desired color */
-color: rgb(0, 0, 0); /* Ensures the text color is white for contrast */
-margin-bottom: 10px; /* Ensure no margin at the bottom */
-padding: 0; /* Adjust padding if needed */
-box-shadow: 0 4px 8px rgba(1, 0, 0, 0.1); /* Add shadow to the toolbar */
+
+.table-container {
+  background-color: white;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-header-cell {
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.mat-cell {
+  padding: 16px;
+}
+
+.api-link {
+  color: #3f51b5;
+  text-decoration: none;
+}
+
+.api-link:hover {
+  text-decoration: underline;
+}
+
+.mat-raised-button {
+  min-width: 120px;
+}
+
+.mat-row:nth-child(even) {
+  background-color: #f8f8f8;
+}
+
+.mat-row:hover {
+  background-color: #e8eaf6;
+}
+
+.mat-paginator {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
 }

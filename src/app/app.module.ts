@@ -31,7 +31,6 @@ import { ApiComponent } from './components/api/api.component';
 import { UserComponent } from './components/user/user.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './components/home/home.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthorisationComponent } from './components/authorisation/authorisation.component';
 import { DemandeAuthorisationComponent } from './components/demande-authorisation/demande-authorisation.component';
 import { DemandeComponent } from './components/demande/demande.component';
@@ -64,7 +63,6 @@ import { DeleteConfirmationDialComponent } from './components/delete-confirmatio
     ApiComponent,
     UserComponent,
     HomeComponent,
-    DashboardComponent,
     AuthorisationComponent,
     DemandeAuthorisationComponent,
     DemandeComponent,

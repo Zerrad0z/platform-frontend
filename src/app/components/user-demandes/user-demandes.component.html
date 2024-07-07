@@ -1,32 +1,53 @@
-<mat-toolbar color="primary">
-  <span>Mes demandes</span>
-</mat-toolbar>
-<div class="user-demandes-container">
-  <div class="table-wrapper">
-    <table mat-table [dataSource]="demandes" class="mat-elevation-z8">
-      <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef> Description </th>
-        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-      </ng-container>
-      <ng-container matColumnDef="startDate">
-        <th mat-header-cell *matHeaderCellDef> Start Date </th>
-        <td mat-cell *matCellDef="let element"> {{element.startDate | date}} </td>
-      </ng-container>
-      <ng-container matColumnDef="endDate">
-        <th mat-header-cell *matHeaderCellDef> End Date </th>
-        <td mat-cell *matCellDef="let element"> {{element.endDate | date}} </td>
-      </ng-container>
-      <ng-container matColumnDef="approved">
-        <th mat-header-cell *matHeaderCellDef> Approved </th>
-        <td mat-cell *matCellDef="let element"> 
-          <span [ngClass]="{'approved': element.approved, 'not-approved': !element.approved}">
-            {{element.approved ? 'Yes' : 'No'}}
-          </span> 
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="['description', 'startDate', 'endDate', 'approved']"></tr>
-      <tr mat-row *matRowDef="let row; columns: ['description', 'startDate', 'endDate', 'approved'];"></tr>
-    </table>
+<div class="demandes-container">
+  <mat-toolbar color="primary" class="page-header">
+    <span>Mes demandes</span>
+  </mat-toolbar>
+
+  <div class="content-wrapper">
+    <div *ngIf="errorMessage" class="error-message mat-elevation-z2">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="dataSource.data.length === 0 && !errorMessage" class="no-demandes-message mat-elevation-z2">
+      Vous n'avez aucune demande en cours.
+    </div>
+
+    <div class="table-container mat-elevation-z8" *ngIf="dataSource.data.length > 0">
+      <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+          <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="api">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Api </th>
+          <td mat-cell *matCellDef="let element"> {{element.apiName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="startDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.startDate | date}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="endDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> End Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.endDate | date}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+          <td mat-cell *matCellDef="let element"> 
+            <span class="status-chip" [ngClass]="{'pending': !element.approved, 'approved': element.approved}">
+              {{ getStatus(element) }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>
   </div>
 </div>
-

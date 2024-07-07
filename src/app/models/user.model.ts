@@ -6,7 +6,7 @@ export interface User {
   username: string;
   email: string;
   password: string;
-  roles: Role[]; // 
+  roles: Role[];  
   permissions: Permission[];
   apiKey: string;
   departmentId?: number;

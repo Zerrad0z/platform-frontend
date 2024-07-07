@@ -15,19 +15,24 @@ export class DemandeAuthorisationService {
   createDemandeAuthorisation(demande: DemandeAuthorisation): Observable<DemandeAuthorisation> {
     return this.http.post<DemandeAuthorisation>(`${this.baseUrl}/create`, demande);
   }
+ 
   getAllDemandeAuthorisations(): Observable<DemandeAuthorisation[]> {
-    return this.http.get<DemandeAuthorisation[]>(`${this.baseUrl}`);
+    return this.http.get<DemandeAuthorisation[]>(this.baseUrl);
+  }
+
+  approveDemande(id: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}/${id}/approve`, {});
+  }
+
+  rejectDemande(id: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}/${id}/reject`, {});
   }
 
   getDemandesByUserId(userId: number): Observable<DemandeAuthorisation[]> {
     return this.http.get<DemandeAuthorisation[]>(`${this.baseUrl}/user/${userId}`);
   }
 
-  approveDemande(id: number): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/${id}/approve`, {});
-  }
+  
 
-  rejectDemande(id: number): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/${id}/reject`, {});
-  }
+ 
 }

@@ -1,21 +1,101 @@
-<!-- layout.component.html -->
-<mat-toolbar color="primary">
-  <span style="flex: 1 1 auto;">
-    <button mat-button routerLink="/home">Accueil</button>
-    <button mat-button routerLink="/apis">Liste des APIs</button>
-    <button mat-button routerLink="/support">Support</button>
-  </span>
-  <button mat-icon-button [matMenuTriggerFor]="profileMenu">
-    <mat-icon>account_circle</mat-icon>
-  </button>
-  <mat-menu #profileMenu="matMenu">
-    <button mat-menu-item routerLink="/profile">Profile</button>
-    <button mat-menu-item routerLink="/demandes">Mes Demandes</button>
-    <button mat-menu-item routerLink="/subscriptions">My Subscriptions</button>
-    <button mat-menu-item (click)="logout()">Logout</button>
-  </mat-menu>
-</mat-toolbar>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav mode="side" [opened]="showDashboard" class="sidenav" *ngIf="showDashboard">
+    <mat-toolbar></mat-toolbar>
+    <mat-nav-list>
+      <mat-expansion-panel *ngIf="authService.hasPermission('MANAGE_USERS')">
+        <mat-expansion-panel-header class="panel-header">
+          <mat-panel-title>
+            <mat-icon>people</mat-icon>
+            <span>{{ authService.hasRole('SUPERADMIN') ? 'Manage Admins' : 'Manage Users' }}</span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-divider></mat-divider>
+        <mat-list-item class="list-item">
+          <mat-icon class="icons" matListIcon>person</mat-icon>
+          <a matLine routerLink="/admin/users" routerLinkActive="active" class="no-underline">
+            {{ authService.hasRole('SUPERADMIN') ? 'Admins' : 'Users' }}
+          </a>
+        </mat-list-item>
+        <mat-list-item class="list-item" *ngIf="authService.hasPermission('ADD_USERS')">
+          <mat-icon class="icons" matListIcon>person_add</mat-icon>
+          <a matLine routerLink="/admin/add-user" routerLinkActive="active" class="no-underline">
+            {{ authService.hasRole('SUPERADMIN') ? 'Add Admin' : 'Add User' }}
+          </a>
+        </mat-list-item>
+        <mat-list-item class="list-item" *ngIf="authService.hasRole('SUPERADMIN')">
+          <mat-icon class="icons" matListIcon>vpn_key</mat-icon>
+          <a matLine routerLink="/admin/api-keys" routerLinkActive="active" class="no-underline">API Keys</a>
+        </mat-list-item>
+      </mat-expansion-panel>
 
-<app-dashboard></app-dashboard>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header class="panel-header">
+          <mat-panel-title>
+            <mat-icon>api</mat-icon>
+            <span (click)="markAsRead()">Manage APIs</span>
+            <span *ngIf="notificationCount > 0" class="notification-badge">{{ notificationCount }}</span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-divider></mat-divider>
+        <mat-list-item class="list-item">
+          <mat-icon class="icons" matListIcon>hourglass_empty</mat-icon>
+          <a matLine routerLink="/admin/demandes" routerLinkActive="active" class="no-underline" (click)="markAsRead()">Demandes</a>
+          <span *ngIf="notificationCount > 0" class="notification-badge">{{ notificationCount }}</span>
+        </mat-list-item>
+        <mat-list-item class="list-item">
+          <mat-icon class="icons" matListIcon>verified</mat-icon>
+          <a matLine routerLink="/admin/approuves" routerLinkActive="active" class="no-underline">Autorisés</a>
+        </mat-list-item>
+        <mat-list-item class="list-item" *ngIf="authService.hasRole('SUPERADMIN')">
+          <mat-icon class="icons" matListIcon>edit</mat-icon>
+          <a matLine routerLink="/admin/api-list" routerLinkActive="active" class="no-underline">Edit APIs</a>
+        </mat-list-item>
+        <mat-list-item class="list-item">
+          <mat-icon class="icons" matListIcon>insert_chart</mat-icon>
+          <a matLine routerLink="/admin/api-usage" routerLinkActive="active" class="no-underline">API Usage</a>
+        </mat-list-item>
+        <mat-list-item class="list-item">
+          <mat-icon class="icons" matListIcon>rate_review</mat-icon>
+          <a matLine routerLink="/admin/rate-limits" routerLinkActive="active" class="no-underline">Rate Limits</a>
+        </mat-list-item>
+        <mat-list-item class="list-item">
+          <mat-icon class="icons" matListIcon>list</mat-icon>
+          <a matLine routerLink="/admin/logs" routerLinkActive="active" class="no-underline">Logs</a>
+        </mat-list-item>
+      </mat-expansion-panel>
 
-
+      <mat-expansion-panel>
+        <mat-expansion-panel-header class="panel-header">
+          <mat-panel-title>
+            <mat-icon>settings</mat-icon>
+            <span>Settings</span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-divider></mat-divider>
+        <mat-list-item class="list-item">
+          <mat-icon matListIcon>settings</mat-icon>
+          <a matLine routerLink="/settings" routerLinkActive="active" class="no-underline">Settings</a>
+        </mat-list-item>
+      </mat-expansion-panel>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content [class.full-width]="!showDashboard">
+    <mat-toolbar color="primary">
+      <span style="flex: 1 1 auto;">
+        <button mat-button routerLink="/home" routerLinkActive="active-link">Accueil</button>
+        <button mat-button routerLink="/apis" routerLinkActive="active-link">Liste des APIs</button>
+        <button mat-button routerLink="/support" routerLinkActive="active-link">Support</button>
+      </span>
+      <button mat-icon-button [matMenuTriggerFor]="profileMenu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #profileMenu="matMenu">
+        <button mat-menu-item routerLink="/profile">Profile</button>
+        <button mat-menu-item routerLink="/demandes">Mes Demandes</button>
+        <button mat-menu-item routerLink="/subscriptions">Mes APIs authorisées</button>
+        <button mat-menu-item (click)="logout()">Logout</button>
+      </mat-menu>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

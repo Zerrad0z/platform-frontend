@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -11,28 +11,45 @@ import { DemandeAuthorisation } from 'src/app/models/demandeAuthorisation.model'
   styleUrls: ['./demande-authorisation.component.css']
 })
 export class DemandeAuthorisationComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'description', 'username', 'apiName', 'startDate', 'endDate', 'status', 'actions'];
+  displayedColumns: string[] = ['id', 'description', 'username', 'apiName', 'startDate', 'endDate', 'actions'];
   dataSource = new MatTableDataSource<DemandeAuthorisation>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private demandeAuthorisationService: DemandeAuthorisationService) { }
+  constructor(
+    private demandeAuthorisationService: DemandeAuthorisationService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
-    this.fetchDemandeAuthorisations();
+    this.fetchAllDemandeAuthorisations();
   }
 
-  fetchDemandeAuthorisations(): void {
+  fetchAllDemandeAuthorisations(): void {
     this.demandeAuthorisationService.getAllDemandeAuthorisations().subscribe(
       (data: DemandeAuthorisation[]) => {
-        console.log('Fetched demandes:', data); // Debugging line
-        data.forEach(demande => console.log(`Demande ID: ${demande.id}, Status: ${demande.status}`)); // Debugging line
+        console.log('Fetched demandes:', data);
+        console.log('Number of demandes:', data.length);
+        
+        data.forEach(demande => {
+          console.log(`Demande ${demande.id}: approved=${demande.approved}, status=${demande.status}`);
+        });
 
-        // Filter out non-pending demandes
-        this.dataSource.data = data.filter(demande => demande.status === 'PENDING');
+        this.dataSource.data = data;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+
+        console.log('DataSource data:', this.dataSource.data);
+        console.log('DataSource data length:', this.dataSource.data.length);
+
+        this.cdr.detectChanges();
+
+        // Check if the table is rendered
+        setTimeout(() => {
+          const tableRows = document.querySelectorAll('table tr');
+          console.log('Number of table rows:', tableRows.length);
+        }, 0);
       },
       error => {
         console.error('Error fetching demande authorisations:', error);
@@ -54,34 +71,36 @@ export class DemandeAuthorisationComponent implements OnInit {
   }
 
   approveDemande(id: number): void {
-    console.log(`Approving demande with id: ${id}`); // Debugging line
-    this.demandeAuthorisationService.approveDemande(id).subscribe(() => {
-      this.updateDemandeStatus(id, 'APPROVED');
-    }, error => {
-      console.error('Error approving demande:', error);
-    });
+    console.log(`Approving demande with id: ${id}`);
+    this.demandeAuthorisationService.approveDemande(id).subscribe(
+      () => {
+        console.log(`Demande ${id} approved successfully`);
+        this.removeDemandeFromTable(id);
+      },
+      error => {
+        console.error('Error approving demande:', error);
+      }
+    );
   }
 
   rejectDemande(id: number): void {
-    console.log(`Rejecting demande with id: ${id}`); // Debugging line
-    this.demandeAuthorisationService.rejectDemande(id).subscribe(() => {
-      this.updateDemandeStatus(id, 'REJECTED');
-    }, error => {
-      console.error('Error rejecting demande:', error);
-    });
+    console.log(`Rejecting demande with id: ${id}`);
+    this.demandeAuthorisationService.rejectDemande(id).subscribe(
+      () => {
+        console.log(`Demande ${id} rejected successfully`);
+        this.removeDemandeFromTable(id);
+      },
+      error => {
+        console.error('Error rejecting demande:', error);
+      }
+    );
   }
 
-  updateDemandeStatus(id: number, status: string): void {
-    console.log(`Updating status for demande with id: ${id} to ${status}`); // Debugging line
-    const demandeIndex = this.dataSource.data.findIndex(demande => demande.id === id);
-    if (demandeIndex > -1) {
-      this.dataSource.data[demandeIndex].status = status;
-
-      // Remove the demande from the table if it's no longer pending
-      if (status !== 'PENDING') {
-        this.dataSource.data.splice(demandeIndex, 1);
-        this.dataSource._updateChangeSubscription(); // Refresh the table
-      }
+  private removeDemandeFromTable(id: number): void {
+    const index = this.dataSource.data.findIndex(demande => demande.id === id);
+    if (index > -1) {
+      this.dataSource.data.splice(index, 1);
+      this.dataSource._updateChangeSubscription();
     }
   }
 }
